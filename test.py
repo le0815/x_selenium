@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
 usr_name = "@NgCHn22001358"
 pwd = "quyetdoanlen"
@@ -49,9 +50,10 @@ if __name__ == "__main__":
     # time.sleep(3)
     # elem = driver.execute_script("return document.querySelector('textarea#text-area').sh")
     # shadow_root -> https://stackoverflow.com/questions/69585279/unable-to-click-on-shadow-root-element-using-selenium
-    elem = driver.execute_script("document.querySelector('cib-serp.cib-serp-main').shadowRoot.querySelector('cib-action-bar').shadowRoot.querySelector('cib-text-input').shadowRoot.querySelector('textarea')")
+    elem = driver.execute_script(
+        "document.querySelector('cib-serp.cib-serp-main').shadowRoot.querySelector('cib-action-bar').shadowRoot.querySelector('cib-text-input').shadowRoot")
+    elem = elem.find_elements(By.CLASS_NAME, "text-area")
 
     print("ok")
     while 1:
         pass
-
