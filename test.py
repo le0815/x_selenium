@@ -88,8 +88,9 @@ def GetTrend(driver):
     # print(type(elms))
     for elm in elms:
         title = elm.text
-        if title.find("#") != -1:
-            trending_title.append(title)
+        print(title)
+        # if title.find("#") != -1:
+        #     trending_title.append(title)
 
     return trending_title
 
@@ -97,6 +98,6 @@ def GetTrend(driver):
 if __name__ == "__main__":
     driver = webdriver.Chrome()
     Login(driver)
-    Scroll(driver)
+    GetTrend(driver)
     while 1:
         pass
