@@ -46,14 +46,10 @@ if __name__ == "__main__":
     driver = webdriver.Chrome()
     driver.get("https://copilot.microsoft.com/")
     time.sleep(3)
-    # elems = driver.find_element(By.XPATH, "/html[1]/body[1]/div[1]/cib-serp[1]")
-    # time.sleep(3)
-    # elem = driver.execute_script("return document.querySelector('textarea#text-area').sh")
-    # shadow_root -> https://stackoverflow.com/questions/69585279/unable-to-click-on-shadow-root-element-using-selenium
-    elem = driver.execute_script(
-        "document.querySelector('cib-serp.cib-serp-main').shadowRoot.querySelector('cib-action-bar').shadowRoot.querySelector('cib-text-input').shadowRoot")
-    elem = elem.find_elements(By.CLASS_NAME, "text-area")
-
+    # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
+    shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
+    elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
+    elem.send_keys("test")
     print("ok")
     while 1:
         pass
