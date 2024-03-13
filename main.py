@@ -87,11 +87,12 @@ def GetTrend(driver):
     elms = driver.find_elements(By.XPATH, "//div[@class='css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1bymd8e']")
     # print(type(elms))
     for elm in elms:
+        print("Trending: ")
         title = elm.text
-        if title.find("#") != -1:
-            trending_title.append(title)
+        trending_title.append(title)
 
     return trending_title
+
 
 
 if __name__ == "__main__":
