@@ -6,6 +6,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
+input_content = "create twitter post  related to the hashtag: $BTCD"
+default_download_path = "/home/ha/PycharmProjects/x_selenium/generated_img"
 
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
@@ -20,35 +22,50 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
     ClickBtn(driver, div_submit_type, text_submit_name)
 
 
-def SendInput(driver, title):
+def SendInput(driver, input_content):
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
     # get input form
     elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
-    elem.send_keys(title)
-    time.sleep(3)
+    elem.send_keys(input_content)
+    time.sleep(1)
     elem.send_keys(Keys.ENTER)
     time.sleep(3)
     GetGeneratedPost(driver)
+
 
 def GetGeneratedPost(driver):
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar").shadow_root
     try:
         elem = shadow_root.find_element(By.CSS_SELECTOR, "cib-typing-indicator[disabled]")
+        print("post generated, getting post")
+        post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
+                                               ".querySelector("
+                                               "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
+                                               "'cib-chat-turn').shadowRoot.querySelector("
+                                               "'cib-message-group.response-message-group').shadowRoot.querySelector("
+                                               "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
+                                               "'clipboard-data')")
+
+        print(f"text generated: {post_generated}")
     except:
         print("post generating")
-        time.sleep(1)
+        time.sleep(2)
         GetGeneratedPost(driver)
-    print("post generated, getting post")
 
 
 if __name__ == "__main__":
-    driver = webdriver.Chrome()
+    # set default download path
+    option = webdriver.ChromeOptions()
+    prefs = {"download.default_directory" : default_download_path}
+    option.add_experimental_option('prefs', prefs)
+    driver = webdriver.Chrome(options=option)
+
     driver.get("https://copilot.microsoft.com/")
     time.sleep(3)
-    SendInput(driver, 'tell me about ww2')
+    SendInput(driver, input_content)
 
     while 1:
         pass
