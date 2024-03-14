@@ -97,6 +97,12 @@ def GetTrend(driver):
 
     return trending_title
 
+def GetCookie(driver):
+    driver.get('https://twitter.com/i/flow/login')
+    while 1:
+        if driver.current_url == "https://twitter.com/home":
+            pickle.dump(driver.get_cookies(), open("cookies.pkl", "wb"))
+            break
 
 def SetCookie(driver):
     driver.get("https://twitter.com/home")
