@@ -7,9 +7,9 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
-usr_name = "@NgCHn22001358"
-pwd = "quyetdoanlen"
-
+__usr_name = "@NgCHn22001358"
+__pwd = "quyetdoanlen"
+__input_tweet = "//html/body/div/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div[2]/div/div/div/div/div[2]/div/div/div/div/div/div/div/div/div/div/div/label/div/div/div/div/div/div/div[2]/div/div/div/div"
 
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
@@ -109,28 +109,19 @@ def SetCookie(driver):
 
 
 def Tweet(driver, post):
-    elem = driver.find_element(By.CSS_SELECTOR, "div.public-DraftStyleDefault-block public-DraftStyleDefault-ltr")
+    elem = driver.find_element(By.XPATH, __input_tweet)
     time.sleep(1)
     elem.send_keys(post)
 
 
 async def main():
-    pass
+
 
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-
-    # with open("x_cookie.json", "r") as file:
-    #     x_cookie = json.load(file)
-    #     print(x_cookie)
-    #     while 1:
-    #         pass
-    #     driver.add_cookie(x_cookie)
-    #     time.sleep(3)
-    # driver.refresh()
-    # Login(driver)
-    # Tweet(driver, "test")
+    SetCookie(driver)
+    Tweet(driver, "test")
     # Scroll(driver)
     while 1:
         pass
