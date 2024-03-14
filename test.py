@@ -1,4 +1,7 @@
 import time
+import pickle
+
+import json
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -97,7 +100,14 @@ def GetTrend(driver):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    Login(driver)
-    GetTrend(driver)
+    driver.get('https://twitter.com/i/flow/login')
     while 1:
-        pass
+        if driver.current_url == "https://twitter.com/home":
+            pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
+            break
+    # Login(driver)
+    # GetTrend(driver)
+    # while 1:
+    #     pass
+    for _ in range(3):
+        print(_)

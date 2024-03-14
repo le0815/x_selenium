@@ -1,4 +1,7 @@
+import pickle
 import time
+import json
+import asyncio
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -30,15 +33,15 @@ def Login(driver):
                "r-30o5oe r-1dz5y72 r-13qz1uu r-1niwhzg r-17gur6a r-1yadl64 r-deolkf r-homxoj r-poiln3 r-7cikom r-1ny4l3l r-t60dpp r-fdjqy7",
                "span",
                "Next",
-               text=usr_name)
-    time.sleep(3)
+               text=usr_name, time_sleep=1)
+    time.sleep(5)
     # input pwd and login
     print("write pwd")
     WriteInput(driver, "input",
                "r-30o5oe r-1dz5y72 r-13qz1uu r-1niwhzg r-17gur6a r-1yadl64 r-deolkf r-homxoj r-poiln3 r-7cikom r-1ny4l3l r-t60dpp r-fdjqy7",
                "span",
                "Log in",
-               text=pwd)
+               text=pwd, time_sleep=1)
 
 
 def Scroll(driver):
@@ -84,7 +87,8 @@ def GetTrend(driver):
     # wait for page loading
     time.sleep(3)
     trending_title = []
-    elms = driver.find_elements(By.XPATH, "//div[@class='css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1bymd8e']")
+    elms = driver.find_elements(By.XPATH,
+                                "//div[@class='css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1bymd8e']")
     # print(type(elms))
     for elm in elms:
         print("Trending: ")
@@ -94,10 +98,39 @@ def GetTrend(driver):
     return trending_title
 
 
+def SetCookie(driver):
+    driver.get("https://twitter.com/home")
+    time.sleep(3)
+    cookies = pickle.load(open("cookies.pkl", "rb"))
+    for cookie in cookies:
+        driver.add_cookie(cookie)
+    time.sleep(1)
+    driver.get("https://twitter.com/home")
+
+
+def Tweet(driver, post):
+    elem = driver.find_element(By.CSS_SELECTOR, "div.public-DraftStyleDefault-block public-DraftStyleDefault-ltr")
+    time.sleep(1)
+    elem.send_keys(post)
+
+
+async def main():
+    pass
+
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    Login(driver)
-    Scroll(driver)
+
+    # with open("x_cookie.json", "r") as file:
+    #     x_cookie = json.load(file)
+    #     print(x_cookie)
+    #     while 1:
+    #         pass
+    #     driver.add_cookie(x_cookie)
+    #     time.sleep(3)
+    # driver.refresh()
+    # Login(driver)
+    # Tweet(driver, "test")
+    # Scroll(driver)
     while 1:
         pass
