@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
 post_prompt = "create twitter post  related to the hashtag: "
-img_prompt = "create a image with hashtag: "
+img_prompt = "create a image with hashtag: tiktok"
 default_download_path = "/home/ha/PycharmProjects/x_selenium/generated_img"
 
 
@@ -24,20 +24,22 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
     ClickBtn(driver, div_submit_type, text_submit_name)
 
 
-def SendInput(driver, input_content):
+def SendInput(driver, prompt):
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
     # get input form
     elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
-    elem.send_keys(input_content)
+    elem.send_keys(prompt)
     time.sleep(1)
     elem.send_keys(Keys.ENTER)
     time.sleep(3)
-    # GetGeneratedPost(driver)
-    GetGeneratedImage(driver)
 
-def GetGeneratedPost(driver):
+
+def GetGeneratedPost(driver, prompt):
+    # insert prompt to generate text
+    SendInput(driver, prompt)
+    # get text generated
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar").shadow_root
     try:
@@ -55,20 +57,22 @@ def GetGeneratedPost(driver):
     except:
         print("post generating")
         time.sleep(2)
-        GetGeneratedPost(driver)
+        GetGeneratedPost(driver, prompt)
 
 
-def GetGeneratedImage(driver):
+def GetGeneratedImage(driver, prompt):
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     # switch to designer mode
     print("switch to designer mode")
     shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
                    find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").
                    find_element(By.CSS_SELECTOR, "cib-side-panel").shadow_root.
-                   find_element(By.CSS_SELECTOR, "cib-free-sydney-persona").shadow_root
+                   find_element(By.CSS_SELECTOR, "cib-free-sydney-persona[personatype='Designer']").shadow_root
                    )
     elem = shadow_root.find_element(By.CSS_SELECTOR, "button")
     elem.click()
+    # insert prompt to generate text
+    SendInput(driver, prompt)
 
 
 if __name__ == "__main__":
@@ -80,7 +84,7 @@ if __name__ == "__main__":
 
     driver.get("https://copilot.microsoft.com/")
     time.sleep(3)
-    # SendInput(driver, post_prompt)
-    GetGeneratedImage(driver)
+
+    GetGeneratedImage(driver, img_prompt)
     while 1:
         pass
