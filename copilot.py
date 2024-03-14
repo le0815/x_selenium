@@ -6,8 +6,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-input_content = "create twitter post  related to the hashtag: $BTCD"
+post_prompt = "create twitter post  related to the hashtag: "
+img_prompt = "create a image with hashtag: "
 default_download_path = "/home/ha/PycharmProjects/x_selenium/generated_img"
+
 
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
@@ -32,8 +34,8 @@ def SendInput(driver, input_content):
     time.sleep(1)
     elem.send_keys(Keys.ENTER)
     time.sleep(3)
-    GetGeneratedPost(driver)
-
+    # GetGeneratedPost(driver)
+    GetGeneratedImage(driver)
 
 def GetGeneratedPost(driver):
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
@@ -56,16 +58,29 @@ def GetGeneratedPost(driver):
         GetGeneratedPost(driver)
 
 
+def GetGeneratedImage(driver):
+    # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
+    # switch to designer mode
+    print("switch to designer mode")
+    shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
+                   find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").
+                   find_element(By.CSS_SELECTOR, "cib-side-panel").shadow_root.
+                   find_element(By.CSS_SELECTOR, "cib-free-sydney-persona").shadow_root
+                   )
+    elem = shadow_root.find_element(By.CSS_SELECTOR, "button")
+    elem.click()
+
+
 if __name__ == "__main__":
     # set default download path
     option = webdriver.ChromeOptions()
-    prefs = {"download.default_directory" : default_download_path}
+    prefs = {"download.default_directory": default_download_path}
     option.add_experimental_option('prefs', prefs)
     driver = webdriver.Chrome(options=option)
 
     driver.get("https://copilot.microsoft.com/")
     time.sleep(3)
-    SendInput(driver, input_content)
-
+    # SendInput(driver, post_prompt)
+    GetGeneratedImage(driver)
     while 1:
         pass
