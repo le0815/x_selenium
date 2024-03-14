@@ -6,8 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-post_prompt = "create twitter post  related to the hashtag: "
-img_prompt = "create a image with hashtag: tiktok"
+
 default_download_path = "/home/ha/PycharmProjects/x_selenium/generated_img"
 
 
@@ -25,6 +24,7 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
 
 
 def SendInput(driver, prompt):
+    print(f"input prompt for {prompt}")
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
@@ -54,6 +54,7 @@ def GetGeneratedPost(driver, prompt):
                                                "'clipboard-data')")
 
         print(f"text generated: {post_generated}")
+        return post_generated
     except:
         print("post generating")
         time.sleep(2)
@@ -75,16 +76,16 @@ def GetGeneratedImage(driver, prompt):
     SendInput(driver, prompt)
 
 
-if __name__ == "__main__":
-    # set default download path
-    option = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": default_download_path}
-    option.add_experimental_option('prefs', prefs)
-    driver = webdriver.Chrome(options=option)
-
-    driver.get("https://copilot.microsoft.com/")
-    time.sleep(3)
-
-    GetGeneratedImage(driver, img_prompt)
-    while 1:
-        pass
+# if __name__ == "__main__":
+#     # set default download path
+#     option = webdriver.ChromeOptions()
+#     prefs = {"download.default_directory": default_download_path}
+#     option.add_experimental_option('prefs', prefs)
+#     driver = webdriver.Chrome(options=option)
+#
+#     driver.get("https://copilot.microsoft.com/")
+#     time.sleep(3)
+#
+#     GetGeneratedImage(driver, img_prompt)
+#     while 1:
+#         pass
