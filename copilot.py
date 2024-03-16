@@ -27,14 +27,18 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
 async def SendInput(driver, prompt):
     print(f"input prompt for {prompt}")
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
-    shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
-        By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
-    # get input form
-    elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
-    elem.send_keys(prompt)
-    await asyncio.sleep(1)
-    elem.send_keys(Keys.ENTER)
-    await asyncio.sleep(3)
+    # if page load not correctly -> try reload
+    try:
+        shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
+            By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
+        # get input form
+        elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
+        elem.send_keys(prompt)
+        await asyncio.sleep(1)
+        elem.send_keys(Keys.ENTER)
+        await asyncio.sleep(3)
+    except:
+        await GetGeneratedPost(driver, prompt)
 
 
 async def GetGeneratedPost(driver, prompt, is_prompted=False):
