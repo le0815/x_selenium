@@ -1,3 +1,4 @@
+import asyncio
 import time
 import json
 from selenium import webdriver
@@ -23,7 +24,7 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
     ClickBtn(driver, div_submit_type, text_submit_name)
 
 
-def SendInput(driver, prompt):
+async def SendInput(driver, prompt):
     print(f"input prompt for {prompt}")
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
@@ -31,34 +32,50 @@ def SendInput(driver, prompt):
     # get input form
     elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
     elem.send_keys(prompt)
-    time.sleep(1)
+    await asyncio.sleep(1)
     elem.send_keys(Keys.ENTER)
-    time.sleep(3)
+    await asyncio.sleep(3)
 
 
-def GetGeneratedPost(driver, prompt):
+async def GetGeneratedPost(driver, prompt, is_prompted=False):
     # insert prompt to generate text
-    SendInput(driver, prompt)
+    # the insert prompt run only once time
+    if not is_prompted:
+        print('redirect to: https://copilot.microsoft.com/')
+        driver.get("https://copilot.microsoft.com/")
+        await asyncio.sleep(3)
+        await SendInput(driver, prompt)
     # get text generated
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar").shadow_root
     try:
         elem = shadow_root.find_element(By.CSS_SELECTOR, "cib-typing-indicator[disabled]")
         print("post generated, getting post")
-        post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
-                                               ".querySelector("
-                                               "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
-                                               "'cib-chat-turn').shadowRoot.querySelector("
-                                               "'cib-message-group.response-message-group').shadowRoot.querySelector("
-                                               "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
-                                               "'clipboard-data')")
+    except:
+        print("post generating")
+        await asyncio.sleep(2)
+        await GetGeneratedPost(driver, prompt, is_prompted=True)
+
+        # microsoft edge version
+        # post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
+        #                                        ".querySelector("
+        #                                        "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
+        #                                        "'cib-chat-turn').shadowRoot.querySelector("
+        #                                        "'cib-message-group.response-message-group').shadowRoot.querySelector("
+        #                                        "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
+        #                                        "'clipboard-data')")
+        # google chrome version
+        shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
+                       find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").shadow_root.
+                       find_element(By.CSS_SELECTOR, "cib-chat-turn").shadow_root.
+                       find_element(By.CSS_SELECTOR, "cib-message-group.response-message-group").shadow_root.
+                       find_element(By.CSS_SELECTOR, "cib-message").shadow_root
+                       )
+        elem = shadow_root.find_element(By.CSS_SELECTOR, "div.ac-textBlock")
+        post_generated = elem.text
 
         print(f"text generated: {post_generated}")
         return post_generated
-    except:
-        print("post generating")
-        time.sleep(2)
-        GetGeneratedPost(driver, prompt)
 
 
 def GetGeneratedImage(driver, prompt):
