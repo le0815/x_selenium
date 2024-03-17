@@ -25,7 +25,7 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
 
 
 async def SendInput(driver, prompt):
-    print(f"input prompt for {prompt}")
+    print(f"input prompt for: {prompt}")
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     # if page load not correctly -> try reload
     try:
