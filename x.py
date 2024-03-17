@@ -19,7 +19,7 @@ __pwd = "quyetdoanlen"
 __input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
 __post_prompt = "create twitter post less than 250 characters related to the hashtag: "
 __img_prompt = "create a image with hashtag: tiktok"
-__ad_link = "\nhttps://bit.ly/XHotNews"
+__ad_link = "\n Click now to get more information: https://bit.ly/XHotNews"
 
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
