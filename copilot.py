@@ -53,39 +53,38 @@ async def GetGeneratedPost(driver, prompt, is_prompted=False):
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
         By.CSS_SELECTOR, "cib-action-bar#cib-action-bar-main").shadow_root
 
-
-    try:
-        elem = shadow_root.find_element(By.CSS_SELECTOR, "cib-typing-indicator[disabled]")
-        print("post generated, getting post")
-    except:
-        print("post generating")
-        await asyncio.sleep(2)
-        await GetGeneratedPost(driver, prompt, is_prompted=True)
-
-        # signin version
+    while 1:
         try:
-            post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
-                                               ".querySelector("
-                                               "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
-                                               "'cib-chat-turn').shadowRoot.querySelector("
-                                               "'cib-message-group.response-message-group').shadowRoot.querySelector("
-                                               "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
-                                               "'clipboard-data')")
+            elem = shadow_root.find_element(By.CSS_SELECTOR, "cib-typing-indicator[disabled]")
+            print("post generated, getting post")
+            break
         except:
-            print('cannot get tweet')
-            post_generated = ''
-        # not signin version
-        # shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
-        #                find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").shadow_root.
-        #                find_element(By.CSS_SELECTOR, "cib-chat-turn").shadow_root.
-        #                find_element(By.CSS_SELECTOR, "cib-message-group.response-message-group").shadow_root.
-        #                find_element(By.CSS_SELECTOR, "cib-message").shadow_root
-        #                )
-        # elem = shadow_root.find_element(By.CSS_SELECTOR, "div.ac-textBlock")
-        # post_generated = elem.text
+            print("post generating")
+            await asyncio.sleep(2)
+    # signin version
+    try:
+        post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
+                                       ".querySelector("
+                                       "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
+                                       "'cib-chat-turn').shadowRoot.querySelector("
+                                       "'cib-message-group.response-message-group').shadowRoot.querySelector("
+                                       "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
+                                       "'clipboard-data')")
+    except:
+        print('cannot get tweet')
+        post_generated = None
+    # not signin version
+    # shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
+    #                find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").shadow_root.
+    #                find_element(By.CSS_SELECTOR, "cib-chat-turn").shadow_root.
+    #                find_element(By.CSS_SELECTOR, "cib-message-group.response-message-group").shadow_root.
+    #                find_element(By.CSS_SELECTOR, "cib-message").shadow_root
+    #                )
+    # elem = shadow_root.find_element(By.CSS_SELECTOR, "div.ac-textBlock")
+    # post_generated = elem.text
 
-        print(f"text generated: {post_generated}")
-        return post_generated
+    print(f"text generated: {post_generated}")
+    return post_generated
 
 
 def GetGeneratedImage(driver, prompt):
