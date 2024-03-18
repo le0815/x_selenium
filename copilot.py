@@ -41,7 +41,7 @@ async def SendInput(driver, prompt):
         await GetGeneratedPost(driver, prompt)
 
 
-async def GetGeneratedPost(driver, prompt, is_prompted=False):
+async def GetGeneratedPost(driver, prompt):
     # insert prompt to generate text
     # the insert prompt run only once time
     # print(f"redirect to: {__home_page}")
