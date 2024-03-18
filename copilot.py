@@ -1,4 +1,5 @@
 import asyncio
+import pickle
 import time
 import json
 from selenium import webdriver
@@ -7,10 +8,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-
 default_download_path = "/home/ha/PycharmProjects/x_selenium/generated_img"
-
-
+__home_page = 'https://copilot.microsoft.com/'
+__signin_page = "https://copilot.microsoft.com/?wlexpsignin=1"
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
     elem.click()
@@ -44,14 +44,16 @@ async def SendInput(driver, prompt):
 async def GetGeneratedPost(driver, prompt, is_prompted=False):
     # insert prompt to generate text
     # the insert prompt run only once time
-    if not is_prompted:
-        print('redirect to: https://copilot.microsoft.com/')
-        driver.get("https://copilot.microsoft.com/")
-        await asyncio.sleep(3)
-        await SendInput(driver, prompt)
+    # print(f"redirect to: {__home_page}")
+    # driver.get(__home_page)
+    await SetCookie(driver)
+    await asyncio.sleep(3)
+    await SendInput(driver, prompt)
     # get text generated
     shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
-        By.CSS_SELECTOR, "cib-action-bar").shadow_root
+        By.CSS_SELECTOR, "cib-action-bar#cib-action-bar-main").shadow_root
+
+
     try:
         elem = shadow_root.find_element(By.CSS_SELECTOR, "cib-typing-indicator[disabled]")
         print("post generated, getting post")
@@ -60,23 +62,27 @@ async def GetGeneratedPost(driver, prompt, is_prompted=False):
         await asyncio.sleep(2)
         await GetGeneratedPost(driver, prompt, is_prompted=True)
 
-        # microsoft edge version
-        # post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
-        #                                        ".querySelector("
-        #                                        "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
-        #                                        "'cib-chat-turn').shadowRoot.querySelector("
-        #                                        "'cib-message-group.response-message-group').shadowRoot.querySelector("
-        #                                        "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
-        #                                        "'clipboard-data')")
-        # google chrome version
-        shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
-                       find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").shadow_root.
-                       find_element(By.CSS_SELECTOR, "cib-chat-turn").shadow_root.
-                       find_element(By.CSS_SELECTOR, "cib-message-group.response-message-group").shadow_root.
-                       find_element(By.CSS_SELECTOR, "cib-message").shadow_root
-                       )
-        elem = shadow_root.find_element(By.CSS_SELECTOR, "div.ac-textBlock")
-        post_generated = elem.text
+        # signin version
+        try:
+            post_generated = driver.execute_script("return document.querySelector('cib-serp.cib-serp-main').shadowRoot"
+                                               ".querySelector("
+                                               "'cib-conversation#cib-conversation-main').shadowRoot.querySelector("
+                                               "'cib-chat-turn').shadowRoot.querySelector("
+                                               "'cib-message-group.response-message-group').shadowRoot.querySelector("
+                                               "'cib-message').shadowRoot.querySelector('cib-code-block').getAttribute("
+                                               "'clipboard-data')")
+        except:
+            print('cannot get tweet')
+            post_generated = ''
+        # not signin version
+        # shadow_root = (driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.
+        #                find_element(By.CSS_SELECTOR, "cib-conversation#cib-conversation-main").shadow_root.
+        #                find_element(By.CSS_SELECTOR, "cib-chat-turn").shadow_root.
+        #                find_element(By.CSS_SELECTOR, "cib-message-group.response-message-group").shadow_root.
+        #                find_element(By.CSS_SELECTOR, "cib-message").shadow_root
+        #                )
+        # elem = shadow_root.find_element(By.CSS_SELECTOR, "div.ac-textBlock")
+        # post_generated = elem.text
 
         print(f"text generated: {post_generated}")
         return post_generated
@@ -97,16 +103,35 @@ def GetGeneratedImage(driver, prompt):
     SendInput(driver, prompt)
 
 
+def GetCookie(driver):
+    driver.get(__home_page)
+    while 1:
+        if driver.current_url == __signin_page:
+            pickle.dump(driver.get_cookies(), open("cookies/copilot_cookies.pkl", "wb"))
+            print('got cookie')
+            break
+
+
+async def SetCookie(driver):
+    driver.get(__home_page)
+    await asyncio.sleep(3)
+    print("setting cookie for copilot")
+    cookies = pickle.load(open("cookies/copilot_cookies.pkl", "rb"))
+    for cookie in cookies:
+        driver.add_cookie(cookie)
+    await asyncio.sleep(1)
+    print("setting cookie for copilot success -> redirect to the login page")
+    driver.get(__home_page)
+
+
 # if __name__ == "__main__":
 #     # set default download path
 #     option = webdriver.ChromeOptions()
 #     prefs = {"download.default_directory": default_download_path}
 #     option.add_experimental_option('prefs', prefs)
 #     driver = webdriver.Chrome(options=option)
+#     asyncio.run(GetGeneratedPost(driver, 'make a tweet with hashtags: St Patrick. The output is place in code tag.'))
+#     # GetCookie(driver)
 #
-#     driver.get("https://copilot.microsoft.com/")
-#     time.sleep(3)
-#
-#     GetGeneratedImage(driver, img_prompt)
 #     while 1:
 #         pass
