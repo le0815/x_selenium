@@ -17,7 +17,7 @@ __pwd = "quyetdoanlen"
 # __input_tweet = "//html/body/div/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div[2]/div/div/div/div/div[2]/div/div/div/div/div/div/div/div/div/div/div/label/div/div/div/div/div/div/div[2]/div/div/div/div"
 # chrome version
 __input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
-__post_prompt = "create twitter post less than 250 characters related to the hashtag: "
+__post_prompt = "make a tweet with hashtags: %s. The output is place in code div"
 __img_prompt = "create a image with hashtag: tiktok"
 __ad_link = "\n Click now to get more information: https://bit.ly/XHotNews"
 
@@ -127,7 +127,7 @@ async def SetCookie(driver):
     driver.get("https://twitter.com/home")
     await asyncio.sleep(3)
     print("setting cookie")
-    cookies = pickle.load(open("cookies.pkl", "rb"))
+    cookies = pickle.load(open("cookies/X_Hot_News_cookies.pkl", "rb"))
     for cookie in cookies:
         driver.add_cookie(cookie)
     await asyncio.sleep(1)
@@ -154,7 +154,7 @@ async def main():
         print(f"loop for tweet: {loop_count}")
         loop_count -= 1
         task_1 = asyncio.create_task(Scroll(driver))
-        task_2 = asyncio.create_task(copilot.GetGeneratedPost(driver_2, __post_prompt + trending_title))
+        task_2 = asyncio.create_task(copilot.GetGeneratedPost(driver_2, __post_prompt % trending_title))
         tasks = [task_1, task_2]
 
         # wait for all task are complete
