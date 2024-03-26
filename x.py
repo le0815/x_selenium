@@ -102,7 +102,7 @@ async def GetTrend(driver):
     driver.get("https://twitter.com/i/trends")
     print("crawling trending")
     # wait for page loading
-    await asyncio.sleep(3)
+    await asyncio.sleep(5)
     trending_title_list = []
     elms = driver.find_elements(By.XPATH,
                                 "//div[@class='css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-b88u0q r-1bymd8e']")
@@ -127,13 +127,36 @@ async def SetCookie(driver):
     driver.get("https://twitter.com/home")
     await asyncio.sleep(3)
     print("setting cookie")
-    cookies = pickle.load(open("cookies/X_Hot_News_cookies.pkl", "rb"))
+    cookies = pickle.load(open("cookies/x_hot_news_cookies.pkl", "rb"))
     for cookie in cookies:
         driver.add_cookie(cookie)
     await asyncio.sleep(1)
     print("setting cookie success -> redirect to the login page")
     driver.get("https://twitter.com/home")
+    await asyncio.sleep(3)
 
+
+async def Comment(driver):
+    print('commenting')
+    global post_commented
+    post_commented = []
+    elems = driver.find_elements(By.CSS_SELECTOR, "div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu")
+    for elem in elems:
+        poster = elem.text[:elem.text.find('·')]
+        print(f"poster: {poster}")
+        if poster in post_commented:
+            print("post was commented")
+            continue
+        comment_icon = driver.find_element(By.XPATH, "//div[@class='css-175oi2r r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu']//span[@class='css-1qaijid r-qvutc0 r-poiln3 r-n6v787 r-1cwl3u0 r-1k6nrdp r-s1qlax']")
+        comment_icon.click()
+        comment = ActionChains(driver)
+        comment.send_keys('ok')
+        comment.perform()
+        await asyncio.sleep(1)
+        submit_btn = driver.find_element(By.CSS_SELECTOR, "div.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-19u6a5r.r-2yi16.r-1qi8awa.r-ymttw5.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
+        submit_btn.click()
+        post_commented.append(poster)
+        print(f"post_commented: {post_commented}")
 
 async def Tweet(driver, post):
     print("insert post to tweet")
@@ -148,6 +171,9 @@ async def Tweet(driver, post):
 
 async def main():
     await SetCookie(driver)
+    await Comment(driver)
+    while 1:
+        pass
     trending_title_list = await GetTrend(driver)
     loop_count = len(trending_title_list)
     for trending_title in trending_title_list:
@@ -170,7 +196,7 @@ async def main():
             result = future.result()
             print(f"async result type: {result} \n name: {future.get_name()}")
             if result is not None:
-                await Tweet(driver, result+__ad_link)
+                await Tweet(driver, result)
 
     print(f"posted {loop_count}: tweet")
 
