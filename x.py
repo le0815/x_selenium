@@ -14,12 +14,15 @@ from selenium.webdriver.common.by import By
 __usr_name = "@NgCHn22001358"
 __pwd = "quyetdoanlen"
 # edge version
-# __input_tweet = "//html/body/div/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div[2]/div/div/div/div/div[2]/div/div/div/div/div/div/div/div/div/div/div/label/div/div/div/div/div/div/div[2]/div/div/div/div"
+# _input_tweet = "//html/body/div/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div[2]/div/div/div/div/div[2]/div/div/div/div/div/div/div/div/div/div/div/label/div/div/div/div/div/div/div[2]/div/div/div/div"
 # chrome version
-__input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
-__post_prompt = "make a tweet with hashtags: %s. The output is place in code div"
-__img_prompt = "create a image with hashtag: tiktok"
-__ad_link = "\n Click now to get more information: https://bit.ly/XHotNews"
+_input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
+_post_prompt = "make a tweet with hashtags: %s. The output is place in code div"
+_img_prompt = "create a image with hashtag: tiktok"
+_ad_link = "\n Click now to get more information: https://bit.ly/XHotNews"
+_comment_prompt = "ok"
+post_commented = []
+
 
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
@@ -72,11 +75,14 @@ async def Scroll(driver):
     last_height = driver.execute_script("return document.body.scrollHeight")
     # scroll 10 times
     scroll_times = 0
-    while scroll_times <= 1:
+    while scroll_times <= 2:
         # Scroll down to bottom
         for i in range(8, 0, -1):
             print(f"scroll time: {scroll_times}")
             driver.execute_script(f"window.scrollTo(0, document.body.scrollHeight/{i});")
+            # comment
+            if i == 4:
+                Comment(driver)
             # Wait to load page
             await asyncio.sleep(2)
             print(f"scroll loop: {i}")
@@ -88,7 +94,6 @@ async def Scroll(driver):
             break
         last_height = new_height
         scroll_times += 1
-
     print("scroll finish")
     # refresh page to turn back top page
     print('refreshing page')
@@ -136,31 +141,60 @@ async def SetCookie(driver):
     await asyncio.sleep(3)
 
 
-async def Comment(driver):
+def Comment(driver):
     print('commenting')
-    global post_commented
-    post_commented = []
+    # get list current post
     elems = driver.find_elements(By.CSS_SELECTOR, "div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu")
     for elem in elems:
-        poster = elem.text[:elem.text.find('·')]
+        try:
+            poster = elem.text[:elem.text.find('·')]
+        except:
+            print('getting post err')
+            continue
         print(f"poster: {poster}")
         if poster in post_commented:
             print("post was commented")
             continue
-        comment_icon = driver.find_element(By.XPATH, "//div[@class='css-175oi2r r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu']//span[@class='css-1qaijid r-qvutc0 r-poiln3 r-n6v787 r-1cwl3u0 r-1k6nrdp r-s1qlax']")
-        comment_icon.click()
-        comment = ActionChains(driver)
-        comment.send_keys('ok')
-        comment.perform()
-        await asyncio.sleep(1)
+        # scroll to element
+        print("scrolling to post")
+        ActionChains(driver).scroll_to_element(elem).perform()
+        # click to post
+        elem.click()
+        # find comment icon
+        comment_input = driver.find_element(By.CSS_SELECTOR, _input_tweet)
+        comment_input.send_keys('adsfdsf')
+        # send text to comment
+        # comment = ActionChains(driver)
+        # comment.send_keys(_comment_prompt)
+        # comment.perform()
+        time.sleep(1)
+        # find submit button
         submit_btn = driver.find_element(By.CSS_SELECTOR, "div.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-19u6a5r.r-2yi16.r-1qi8awa.r-ymttw5.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
         submit_btn.click()
         post_commented.append(poster)
+        print(f"commented for post: {post_commented}")
         print(f"post_commented: {post_commented}")
+        # if have popup
+        try:
+            elem = driver.find_element(By.XPATH, "//span[text()='Bạn được khám phá nhiều điều hơn trên X']")
+            print("have pop up -> closing")
+            # click close btn
+            close_btn = driver.find_element(By.CSS_SELECTOR, "div.css-1rynq56.r-bcqeeo.r-qvutc0.r-37j5jr.r-q4m81j.r-a023e6.r-rjixqe.r-b88u0q.r-1awozwy.r-6koalj.r-18u37iz.r-16y2uox.r-1777fci")
+            close_btn.click()
+            print('closed popup button')
+        except:
+            print("no popup")
+        # close post
+        time.sleep(1)
+        close_post = ActionChains(driver)
+        close_post.send_keys(Keys.ESCAPE).perform()
+        break
+
 
 async def Tweet(driver, post):
+    driver.refresh()
     print("insert post to tweet")
-    elem = driver.find_element(By.CSS_SELECTOR, __input_tweet)
+    elem = driver.find_element(By.CSS_SELECTOR, _input_tweet)
     await asyncio.sleep(1)
     pyperclip.copy(post)
     elem.send_keys(Keys.CONTROL+'v')
@@ -171,25 +205,18 @@ async def Tweet(driver, post):
 
 async def main():
     await SetCookie(driver)
-    await Comment(driver)
-    while 1:
-        pass
     trending_title_list = await GetTrend(driver)
     loop_count = len(trending_title_list)
     for trending_title in trending_title_list:
         print(f"loop for tweet: {loop_count}")
         loop_count -= 1
         task_1 = asyncio.create_task(Scroll(driver))
-        task_2 = asyncio.create_task(copilot.GetGeneratedPost(driver_2, __post_prompt % trending_title))
+        task_2 = asyncio.create_task(copilot.GetGeneratedPost(driver_2, _post_prompt % trending_title))
         tasks = [task_1, task_2]
 
         # wait for all task are complete
+        await asyncio.gather(*asyncio.all_tasks())
         done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
-
-        # iterator finished task
-        # for future in pending:
-        #     print("pending task")
-        #     result = future.get_name()
 
         # iterator finished task
         for future in done:
@@ -200,11 +227,33 @@ async def main():
 
     print(f"posted {loop_count}: tweet")
 
+async def test(driver):
+    await SetCookie(driver)
+    loop_count = 20
+    for trending_title in range(20):
+        print(f"loop for tweet: {loop_count}")
+        loop_count -= 1
+        task_1 = asyncio.create_task(Scroll(driver))
+
+        # wait for all task are complete
+        await asyncio.gather(*asyncio.all_tasks())
+        done, pending = await asyncio.wait(task_1, return_when=asyncio.ALL_COMPLETED)
+
+        # iterator finished task
+        for future in done:
+            result = future.result()
+            print(f"async result type: {result} \n name: {future.get_name()}")
+            if result is not None:
+                await Tweet(driver, result)
+
+
+
 if __name__ == "__main__":
     driver = webdriver.Chrome()
     # use for copilot.py
     driver_2 = webdriver.Chrome()
     asyncio.run(main())
+    # asyncio.run(test(driver))
     # Scroll(driver)
     while 1:
         pass
