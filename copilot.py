@@ -8,9 +8,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-default_download_path = "/home/ha/PycharmProjects/x_selenium/generated_img"
-__home_page = 'https://copilot.microsoft.com/'
-__signin_page = "https://copilot.microsoft.com/?wlexpsignin=1"
+_default_download_path_ = "/home/ha/PycharmProjects/x_selenium/generated_img"
+_home_page_ = 'https://copilot.microsoft.com/'
+_signin_page_ = "https://copilot.microsoft.com/?wlexpsignin=1"
 def ClickBtn(driver, div_type, text, time_sleep=3):
     elem = driver.find_element(By.XPATH, f"//{div_type}[text()='{text}']")
     elem.click()
@@ -25,27 +25,28 @@ def WriteInput(driver, div_inp_type, class_inp_name, div_submit_type, text_submi
 
 
 async def SendInput(driver, prompt):
+
     print(f"input prompt for: {prompt}")
+
     # shadow_root -> https://www.youtube.com/watch?v=OhGY_ZNBsu0
     # if page load not correctly -> try reload
     try:
+        print("getting input form for copilot")
         shadow_root = driver.find_element(By.CSS_SELECTOR, "cib-serp.cib-serp-main").shadow_root.find_element(
             By.CSS_SELECTOR, "cib-action-bar").shadow_root.find_element(By.CSS_SELECTOR, "cib-text-input").shadow_root
+
         # get input form
         elem = shadow_root.find_element(By.CLASS_NAME, "text-area")
         elem.send_keys(prompt)
         await asyncio.sleep(1)
         elem.send_keys(Keys.ENTER)
         await asyncio.sleep(3)
+
     except:
-        await GetGeneratedPost(driver, prompt)
+        print('error while sending prompt for copilot')
 
 
 async def GetGeneratedPost(driver, prompt):
-    # insert prompt to generate text
-    # the insert prompt run only once time
-    # print(f"redirect to: {__home_page}")
-    # driver.get(__home_page)
     await SetCookie(driver)
     await asyncio.sleep(3)
     await SendInput(driver, prompt)
@@ -103,16 +104,16 @@ def GetGeneratedImage(driver, prompt):
 
 
 def GetCookie(driver):
-    driver.get(__home_page)
+    driver.get(_home_page_)
     while 1:
-        if driver.current_url == __signin_page:
+        if driver.current_url == _signin_page_:
             pickle.dump(driver.get_cookies(), open("cookies/copilot_cookies.pkl", "wb"))
             print('got cookie')
             break
 
 
 async def SetCookie(driver):
-    driver.get(__home_page)
+    driver.get(_home_page_)
     await asyncio.sleep(3)
     print("setting cookie for copilot")
     cookies = pickle.load(open("cookies/copilot_cookies.pkl", "rb"))
@@ -120,7 +121,7 @@ async def SetCookie(driver):
         driver.add_cookie(cookie)
     await asyncio.sleep(1)
     print("setting cookie for copilot success -> redirect to the login page")
-    driver.get(__home_page)
+    driver.get(_home_page_)
 
 
 # if __name__ == "__main__":

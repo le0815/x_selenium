@@ -19,7 +19,7 @@ __pwd = "quyetdoanlen"
 _input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
 _post_prompt = "make a tweet with hashtags: %s. The output is place in code div"
 _img_prompt = "create a image with hashtag: tiktok"
-_ad_link = "\n Click now to get more information: https://bit.ly/XHotNews"
+_ad_link = "\n Click now to get 5 Doge FREE: https://bit.ly/XHotNews"
 _comment_prompt = "ok"
 post_commented = []
 
@@ -143,6 +143,7 @@ async def SetCookie(driver):
 
 def Comment(driver):
     print('commenting')
+
     # get list current post
     elems = driver.find_elements(By.CSS_SELECTOR, "div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu")
     for elem in elems:
@@ -155,53 +156,93 @@ def Comment(driver):
         if poster in post_commented:
             print("post was commented")
             continue
+
         # scroll to element
-        print("scrolling to post")
-        ActionChains(driver).scroll_to_element(elem).perform()
+        try:
+            print("scrolling to post")
+            ActionChains(driver).scroll_to_element(elem).perform()
+        except:
+            print("cannot scroll to post")
+            continue
+
         # click to post
-        elem.click()
+        # elem.click()
+
+        # open post in new tab
+        try:
+            print("clicking to post")
+            new_post = ActionChains(driver)
+            new_post.key_down(Keys.CONTROL).click(elem).key_up(Keys.CONTROL).perform()
+        except:
+            print("cannot open post to new tab")
+            continue
+
+        # switch to new post tab
+        driver.switch_to.window(driver.window_handles[1])
+        time.sleep(5)
+
         # find comment icon
-        comment_input = driver.find_element(By.CSS_SELECTOR, _input_tweet)
-        comment_input.send_keys('adsfdsf')
+        try:
+            print("commenting")
+            comment_input = driver.find_element(By.CSS_SELECTOR, _input_tweet)
+            time.sleep(2)
+            comment_input.send_keys('adsfdsf')
+        except:
+            scroll_down = ActionChains(driver)
+            scroll_down.send_keys(Keys.PAGE_DOWN)
+            time.sleep(1)
+            scroll_down.send_keys(Keys.PAGE_DOWN)
+            try:
+                comment_input = driver.find_element(By.CSS_SELECTOR, _input_tweet)
+                time.sleep(2)
+                comment_input.send_keys('adsfdsf')
+            except:
+                print("cannot scroll, try again")
+                continue
+
+
+
         # send text to comment
         # comment = ActionChains(driver)
         # comment.send_keys(_comment_prompt)
         # comment.perform()
-        time.sleep(1)
+
         # find submit button
-        submit_btn = driver.find_element(By.CSS_SELECTOR, "div.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-19u6a5r.r-2yi16.r-1qi8awa.r-ymttw5.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
-        submit_btn.click()
+        # submit_btn = driver.find_element(By.CSS_SELECTOR, "div.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-19u6a5r.r-2yi16.r-1qi8awa.r-ymttw5.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
+        # submit_btn.click()
+
+        # use shortcut to submit
+        print("sending key stroke to submit")
+        comment_input.send_keys(Keys.CONTROL + Keys.ENTER)
+        time.sleep(3)
+        # add usr_acc to list
         post_commented.append(poster)
         print(f"commented for post: {post_commented}")
         print(f"post_commented: {post_commented}")
-        # if have popup
-        try:
-            elem = driver.find_element(By.XPATH, "//span[text()='Bạn được khám phá nhiều điều hơn trên X']")
-            print("have pop up -> closing")
-            # click close btn
-            close_btn = driver.find_element(By.CSS_SELECTOR, "div.css-1rynq56.r-bcqeeo.r-qvutc0.r-37j5jr.r-q4m81j.r-a023e6.r-rjixqe.r-b88u0q.r-1awozwy.r-6koalj.r-18u37iz.r-16y2uox.r-1777fci")
-            close_btn.click()
-            print('closed popup button')
-        except:
-            print("no popup")
-        # close post
-        time.sleep(1)
-        close_post = ActionChains(driver)
-        close_post.send_keys(Keys.ESCAPE).perform()
+
+        # close new post tab
+        driver.close()
+        print("new tab closed")
+
+        # switch driver to main tab
+        print("switch to main tab")
+        driver.switch_to.window(driver.window_handles[0])
+
         break
 
 
 async def Tweet(driver, post):
-    driver.refresh()
+    await asyncio.sleep(3)
     print("insert post to tweet")
     elem = driver.find_element(By.CSS_SELECTOR, _input_tweet)
     await asyncio.sleep(1)
     pyperclip.copy(post)
-    elem.send_keys(Keys.CONTROL+'v')
+    elem.send_keys(Keys.CONTROL + 'v')
     await asyncio.sleep(1)
     elem.send_keys(Keys.CONTROL + Keys.ENTER)
     await asyncio.sleep(5)
     print('posted')
+
 
 async def main():
     await SetCookie(driver)
@@ -215,7 +256,7 @@ async def main():
         tasks = [task_1, task_2]
 
         # wait for all task are complete
-        await asyncio.gather(*asyncio.all_tasks())
+        # await asyncio.gather(*asyncio.all_tasks())
         done, pending = await asyncio.wait(tasks, return_when=asyncio.ALL_COMPLETED)
 
         # iterator finished task
@@ -226,6 +267,7 @@ async def main():
                 await Tweet(driver, result)
 
     print(f"posted {loop_count}: tweet")
+
 
 async def test(driver):
     await SetCookie(driver)
@@ -247,11 +289,12 @@ async def test(driver):
                 await Tweet(driver, result)
 
 
-
 if __name__ == "__main__":
     driver = webdriver.Chrome()
+
     # use for copilot.py
     driver_2 = webdriver.Chrome()
+
     asyncio.run(main())
     # asyncio.run(test(driver))
     # Scroll(driver)
