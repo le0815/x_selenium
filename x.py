@@ -19,7 +19,8 @@ __pwd = "quyetdoanlen"
 _input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
 _post_prompt = "make a tweet with hashtags: %s. The output is place in code div"
 _img_prompt = "create a image with hashtag: tiktok"
-_ad_link = "\n Click now to get 5 Doge FREE: https://bit.ly/XHotNews"
+_ad_link_post = "\n Click now to get 5 Doge FREE: https://doostozoa.net/4/7335440"
+_ad_link_comment = "\n Click now to get 5 Doge FREE: https://domuipan.com/4/7335444"
 _comment_prompt = "ok"
 post_commented = []
 
@@ -128,11 +129,11 @@ def GetCookie(driver):
             break
 
 
-async def SetCookie(driver):
+async def SetCookie(driver, cookie_path):
     driver.get("https://twitter.com/home")
     await asyncio.sleep(3)
     print("setting cookie")
-    cookies = pickle.load(open("cookies/x_hot_news_cookies.pkl", "rb"))
+    cookies = pickle.load(open(f"{cookie_path}", "rb"))
     for cookie in cookies:
         driver.add_cookie(cookie)
     await asyncio.sleep(1)
@@ -165,9 +166,6 @@ def Comment(driver):
             print("cannot scroll to post")
             continue
 
-        # click to post
-        # elem.click()
-
         # open post in new tab
         try:
             print("clicking to post")
@@ -178,15 +176,19 @@ def Comment(driver):
             continue
 
         # switch to new post tab
-        driver.switch_to.window(driver.window_handles[1])
-        time.sleep(5)
+        try:
+            driver.switch_to.window(driver.window_handles[1])
+            time.sleep(5)
+        except:
+            print("cannot switch to new tab")
+            continue
 
         # find comment icon
         try:
             print("commenting")
             comment_input = driver.find_element(By.CSS_SELECTOR, _input_tweet)
             time.sleep(2)
-            comment_input.send_keys('adsfdsf')
+            comment_input.send_keys(_ad_link_comment)
         except:
             scroll_down = ActionChains(driver)
             scroll_down.send_keys(Keys.PAGE_DOWN)
@@ -195,21 +197,19 @@ def Comment(driver):
             try:
                 comment_input = driver.find_element(By.CSS_SELECTOR, _input_tweet)
                 time.sleep(2)
-                comment_input.send_keys('adsfdsf')
+                comment_input.send_keys(_ad_link_comment)
             except:
                 print("cannot scroll, try again")
+
+                # close new post tab
+                driver.close()
+                print("new tab closed")
+
+                # switch driver to main tab
+                print("switch to main tab")
+                driver.switch_to.window(driver.window_handles[0])
+
                 continue
-
-
-
-        # send text to comment
-        # comment = ActionChains(driver)
-        # comment.send_keys(_comment_prompt)
-        # comment.perform()
-
-        # find submit button
-        # submit_btn = driver.find_element(By.CSS_SELECTOR, "div.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-19u6a5r.r-2yi16.r-1qi8awa.r-ymttw5.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
-        # submit_btn.click()
 
         # use shortcut to submit
         print("sending key stroke to submit")
@@ -244,8 +244,10 @@ async def Tweet(driver, post):
     print('posted')
 
 
-async def main():
-    await SetCookie(driver)
+async def main(cookie_path):
+    driver = webdriver.Chrome()
+    driver_2 = webdriver.Chrome()
+    await SetCookie(driver, cookie_path)
     trending_title_list = await GetTrend(driver)
     loop_count = len(trending_title_list)
     for trending_title in trending_title_list:
@@ -264,7 +266,7 @@ async def main():
             result = future.result()
             print(f"async result type: {result} \n name: {future.get_name()}")
             if result is not None:
-                await Tweet(driver, result)
+                await Tweet(driver, f"{result}\n{_ad_link_post}")
 
     print(f"posted {loop_count}: tweet")
 
@@ -278,7 +280,7 @@ async def test(driver):
         task_1 = asyncio.create_task(Scroll(driver))
 
         # wait for all task are complete
-        await asyncio.gather(*asyncio.all_tasks())
+        # await asyncio.gather(*asyncio.all_tasks())
         done, pending = await asyncio.wait(task_1, return_when=asyncio.ALL_COMPLETED)
 
         # iterator finished task
@@ -288,15 +290,14 @@ async def test(driver):
             if result is not None:
                 await Tweet(driver, result)
 
-
-if __name__ == "__main__":
-    driver = webdriver.Chrome()
-
-    # use for copilot.py
-    driver_2 = webdriver.Chrome()
-
-    asyncio.run(main())
-    # asyncio.run(test(driver))
-    # Scroll(driver)
-    while 1:
-        pass
+# if __name__ == "__main__":
+#     driver = webdriver.Chrome()
+#
+#     # use for copilot.py
+#     driver_2 = webdriver.Chrome()
+#
+#     asyncio.run(main())
+#     # asyncio.run(test(driver))
+#     # Scroll(driver)
+#     while 1:
+#         pass
