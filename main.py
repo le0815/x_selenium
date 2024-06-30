@@ -2,9 +2,7 @@ import asyncio
 import threading
 import time
 
-import reg_x
-from crawl_community import CrawlCommunity
-from reg_x import RegX
+from x_functions import X_Functions
 from selenium.webdriver import ActionChains, Keys
 from selenium import webdriver
 
@@ -13,7 +11,6 @@ _ad_link_comment = "📷📷HAMSTER KOMBAT is a very interesting event. It's tru
 "📷Those of you who don't know how to open and start working now: https://reemebal.com/4/7335440"
 "📷Register to receive 5k coins immediately"
 "📷$HAMTER KOMBAT is world cooperated"
-_email_pwd = '13579thanG$'
 _input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
 
 
@@ -27,7 +24,7 @@ _input_tweet = "div.public-DraftStyleDefault-block.public-DraftStyleDefault-ltr"
 async def MultiComment(cookie_path, community_link, comment_link, _ad_link_comment, _input_tweet, name):
     driver_comment_acc = webdriver.Chrome()
 
-    comment_acc = CrawlCommunity(driver=driver_comment_acc, name=name)
+    comment_acc = X_Functions.Login(driver=driver_comment_acc, name=name)
 
     await comment_acc.LoginWithCookie(cookie_path=cookie_path)
 
@@ -48,14 +45,24 @@ async def main(comment_link_list, community_link, len):
 
 if __name__ == "__main__":
     driver = webdriver.Chrome()
-    craw_acc = CrawlCommunity(driver, 'crawl_acc')
-    craw_acc.Login('lcurlis9ha1a@amachadoespera.com', _email_pwd)
-    community_link = 'https://x.com/cogiaomoon69'
-    comment_link_list = craw_acc.CrawlMostViewComment(community_link=community_link, number_of_comment_link=20)
+    main_acc = X_Functions(driver, 'main')
+    main_acc.Login('lcurlis9ha1a@amachadoespera.com')
+    # post_list = main_acc.GetComment(number_of_comment=3, link='https://x.com/UyenNhi3x')
+    main_acc.CommentWithImage(comment_link='https://x.com/wilfong255kv/status/1807253256764317810/', _input_tweet=_input_tweet, text='adfdsaf', img_path='asdf')
 
-    with open('link_list/co_giao_lon_ton.txt', 'w') as file:
-        for link in comment_link_list:
-            file.writelines(link+'\n')
+    while 1:
+        pass
+
+    # asyncio.run(craw_acc.LoginWithCookie('cookies/wraisbeckbja1a@amachadoespera_WRaisbeck53282.pkl'))
+    #
+    # while 1:
+    #     pass
+    # community_link = 'https://x.com/cogiaomoon69'
+    # comment_link_list = craw_acc.CrawlMostViewComment(community_link=community_link, number_of_comment_link=20)
+    #
+    # with open('link_list/co_giao_lon_ton.txt', 'w') as file:
+    #     for link in comment_link_list:
+    #         file.writelines(link+'\n')
 
     # i = 0
     # print('starting async')

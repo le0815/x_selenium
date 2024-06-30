@@ -22,12 +22,13 @@ def LoginWithCookie(cookie_path):
     time.sleep(3)
     print(f"setting cookie")
     cookies = pickle.load(open(f"{cookie_path}", "rb"))
+
     for cookie in cookies:
         driver.add_cookie(cookie)
     time.sleep(1)
     print(f"setting cookie success -> redirect to the login page")
     driver.get("https://x.com/home")
-    time.sleep(3)
+    time.sleep(5)
 
     # if 'https://x.com/home' not in driver.current_url:
     #     return cookie_path
@@ -40,4 +41,4 @@ def LoginWithCookie(cookie_path):
 
 # arr = [LoginWithCookie(cookie_path=f"cookies/comment_acc_{i}.pkl") for i in range(11)]
 
-LoginWithCookie(cookie_path=f"cookies/comment_acc_1.pkl")
+LoginWithCookie(cookie_path=f"cookies/comment_acc_2.pkl")

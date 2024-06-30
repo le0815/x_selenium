@@ -2,7 +2,7 @@ import subprocess
 import os
 import shutil
 
-path = "vpn_acc/"
+path = "../vpn_acc/"
 path_vpn_old = "serverListTCP/"
 
 
