@@ -49,7 +49,7 @@ if __name__ == "__main__":
     main_acc.Login('lcurlis9ha1a@amachadoespera.com')
     # post_list = main_acc.GetComment(number_of_comment=3, link='https://x.com/UyenNhi3x')
     main_acc.CommentWithImage(comment_link='https://x.com/wilfong255kv/status/1807253256764317810/', _input_tweet=_input_tweet, text='adfdsaf', img_path='asdf')
-
+    main_acc.GetCommentLink(usr_name='LulitaC36489')
     while 1:
         pass
 

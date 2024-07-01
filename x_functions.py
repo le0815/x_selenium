@@ -40,7 +40,7 @@ class X_Functions:
         email_inp.send_keys(email).perform()
         time.sleep(1)
         email_inp.send_keys(Keys.ENTER).perform()
-        time.sleep(3)
+        time.sleep(4)
         print(f"entering pwd - ({self.name})")
         email_inp.send_keys(_email_pwd).perform()
         time.sleep(1)
@@ -558,3 +558,46 @@ class X_Functions:
         time.sleep(3)
 
         print(f'commenting finished - ({self.name})')
+
+    def GetCommentLink(self, usr_name):
+        print('finding comment link')
+        comment_css = ('div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu')
+        elems = self.driver.find_elements(By.CSS_SELECTOR, comment_css)
+
+        for elem in elems:
+
+            # scroll to current comment
+            print(f'scrolling to current comment- ({self.name})')
+            try:
+                if elem is elems[len(elems) - 1]:
+                    print(f'sroll to end page - ({self.name})')
+                    ActionChains(self.driver).send_keys(Keys.END).perform()
+
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
+                time.sleep(1)
+            except:
+                print(f"can't get comment link - ({self.name})")
+                break
+
+            # check usr_name of comment
+            usr_name_current = elem.text[elem.text.find("@")+1:elem.text.find('·')-1]
+            if usr_name != usr_name_current:
+                print('usr name not equal -> break')
+                break
+
+            # get link of comment
+            try:
+                print(f'try getting link of comment- ({self.name})')
+                text = self.driver.execute_script(
+                    "elm = arguments[0].lastElementChild.childNodes[0].childNodes[0].childNodes[3].lastChild;"
+                    "return String(elm.getAttribute('aria-label')) + ' - ' + String(elm.getAttribute('href'));"
+                    , elem)
+                print(text + f' - ({self.name})')
+            except:
+                print(f'cannot get link of post - ({self.name})')
+                continue
+
+            # extract the link from text
+            comment_link = 'https://x.com' + text[text.find('/'):-9]
+            print(f'getting comment link ok: {comment_link}')
+            return comment_link
