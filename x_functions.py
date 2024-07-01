@@ -52,8 +52,8 @@ class X_Functions:
             print(f"clicking accept btn - ({self.name})")
             elem = self.driver.find_element(By.CSS_SELECTOR, "div#confirm_yes")
             elem.click()
-        except:
-            print(f"no accept btn - ({self.name})")
+        except Exception as err:
+            print(f"no accept btn - ({self.name}): {err}")
 
         # switch back to main window
         print(f"switching to main window - ({self.name})")
@@ -111,8 +111,8 @@ class X_Functions:
                 try:
                     self.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
                     time.sleep(1)
-                except:
-                    print(f"can't scroll to community - ({self.name})")
+                except Exception as err:
+                    print(f"can't scroll to community - ({self.name}): {err}")
                     continue
 
                 print(elem.text)
@@ -187,8 +187,8 @@ class X_Functions:
                     elem[0].click()
                     time.sleep(1)
 
-        except:
-            print(f'no /try it out/ popups - ({self.name})')
+        except Exception as err:
+            print(f"no /try it out/ popups - ({self.name}): {err}")
 
         # check join community
         try:
@@ -205,8 +205,8 @@ class X_Functions:
                                                 "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-15ysp7h.r-4wgw6l.r-3pj75a.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
                 elem.click()
 
-        except:
-            print(f'joined - ({self.name})')
+        except Exception as err:
+            print(f"joined - ({self.name}): {err}")
 
         time.sleep(2)
 
@@ -243,8 +243,8 @@ class X_Functions:
             elem = self.driver.find_elements(By.CSS_SELECTOR,
                                              "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
             print(f'clicking popups - ({self.name})')
-        except:
-            print(f'no popups - ({self.name})')
+        except Exception as err:
+            print(f"no popups - ({self.name}): {err}")
 
         time.sleep(1)
         print(f'finding input - ({self.name})')
@@ -296,8 +296,8 @@ class X_Functions:
 
                     self.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
                     time.sleep(1)
-                except:
-                    print(f"can't scroll to post - ({self.name})")
+                except Exception as err:
+                    print(f"can't scroll to post - ({self.name}): {err}")
                     continue
 
                 # get number of view
@@ -308,8 +308,8 @@ class X_Functions:
                         "return String(elm.getAttribute('aria-label')) + ' - ' + String(elm.getAttribute('href'));"
                         , elem)
                     print(text + f' - ({self.name})')
-                except:
-                    print(f'cannot get link of post - ({self.name})')
+                except Exception as err:
+                    print(f"cannot get link of post - ({self.name}): {err}")
                     continue
 
                 # extract the link from text
@@ -344,7 +344,7 @@ class X_Functions:
 
         # input email
         # switch to login window
-        print("switching to login form")
+        print(f"switching to login form - ({self.name})")
         self.driver.switch_to.window(self.driver.window_handles[1])
         time.sleep(3)
         email_inp = ActionChains(self.driver)
@@ -361,81 +361,81 @@ class X_Functions:
         time.sleep(2)
         try:
             # click accept btn
-            print("clicking accept btn")
+            print(f"clicking accept btn - ({self.name})")
             elem = self.driver.find_element(By.CSS_SELECTOR, "div#confirm_yes")
             elem.click()
-        except:
-            print("no accept btn")
+        except Exception as err:
+            print(f"no accept btn - ({self.name}): {err}")
 
         # switch back to main window
-        print("switching to main window")
+        print(f"switching to main window - ({self.name})")
         self.driver.switch_to.window(self.driver.window_handles[0])
         time.sleep(5)
 
         # select month
-        print('select month')
+        print(f'select month - ({self.name})')
         Select(self.driver.find_element(By.ID, "SELECTOR_1")).select_by_value("8")
 
         # select day
-        print('select day')
+        print(f'select day - ({self.name})')
         Select(self.driver.find_element(By.ID, "SELECTOR_2")).select_by_value("15")
 
         # select year
-        print('select year')
+        print(f'select year - ({self.name})')
         Select(self.driver.find_element(By.ID, "SELECTOR_3")).select_by_value("2000")
 
         # submit
         time.sleep(1)
-        print('submit')
+        print(f'submit - ({self.name})')
         elem = self.driver.find_element(By.CSS_SELECTOR, "button[data-testid='ocfEnterDateNextLink']")
         elem.click()
 
         # use for get usr_name to add cookie, if not disable it
         # get usr_name
         time.sleep(5)
-        print('getting usr_name')
+        print(f'getting usr_name - ({self.name})')
         usr_name = self.driver.execute_script(
             f"elm = document.querySelector('input'); return elm.getAttribute('value')")
-        print(f'usr_name: {usr_name}')
+        print(f'usr_name - ({self.name}): {usr_name}')
         yield usr_name
 
         # redirect to community
         time.sleep(3)
-        print('redirect to community')
+        print(f'redirect to community - ({self.name})')
         self.driver.get("https://x.com/i/communities/1506800881525829633")
         time.sleep(2)
 
         # check 'try it out' popups
         try:
-            print('finding /try it out/ popups')
+            print(f'finding /try it out/ popups - ({self.name})')
             elem = self.driver.find_elements(By.CSS_SELECTOR,
                                              "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
 
             if 'Try it out' in elem[1].text:
-                print('have Try it out popups')
-                print('clicking /try it out/ popups')
+                print(f'have Try it out popups - ({self.name})')
+                print(f'clicking /try it out/ popups - ({self.name})')
                 elem[1].click()
 
                 if 'Check it out' in elem[0].text:
-                    print('have popups')
-                    print('clicking /Check it out/ popups')
+                    print(f'have popups - ({self.name})')
+                    print(f'clicking /Check it out/ popups - ({self.name})')
                     elem[0].click()
 
         except:
-            print('no /try it out/ popups')
+            print(f'no /try it out/ popups - ({self.name})')
 
-        print('ok')
+        print(f'ok - ({self.name})')
 
     def FollowPage(self):
         time.sleep(5)
-        print("redirect to following page")
+        print(f"redirect to following page - ({self.name})")
         self.driver.get("https://twitter.com/__XHotNews/following")
         time.sleep(3)
-        print("selecting follow btn")
+        print(f"selecting follow btn - ({self.name})")
         elems = self.driver.find_elements(By.CSS_SELECTOR,
                                           "div.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-15ysp7h.r-4wgw6l.r-ymttw5.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
         for elm in elems:
-            print("follow page")
+            print(f"follow page - ({self.name})")
             elm.click()
             time.sleep(3)
 
@@ -469,8 +469,8 @@ class X_Functions:
                     if 'Pinned' in elem.text:
                         print('post has pinned -> continue')
                         continue
-                except:
-                    print(f"can't scroll to post - ({self.name})")
+                except Exception as err:
+                    print(f"can't scroll to post - ({self.name}): {err}")
                     continue
 
                 # get number of view
@@ -481,8 +481,8 @@ class X_Functions:
                         "return String(elm.getAttribute('aria-label')) + ' - ' + String(elm.getAttribute('href'));"
                         , elem)
                     print(text + f' - ({self.name})')
-                except:
-                    print(f'cannot get link of post - ({self.name})')
+                except Exception as err:
+                    print(f"cannot get link of post - ({self.name}): {err}")
                     continue
 
                 # extract the link from text
@@ -528,9 +528,8 @@ class X_Functions:
             elem = self.driver.find_elements(By.CSS_SELECTOR,
                                              "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
             print(f'clicking popups - ({self.name})')
-        except:
-            print(f'no popups - ({self.name})')
-
+        except Exception as err:
+            print(f"no popups - ({self.name}): {err}")
         # send image
         print('sending image')
         time.sleep(1)
@@ -560,7 +559,7 @@ class X_Functions:
         print(f'commenting finished - ({self.name})')
 
     def GetCommentLink(self, usr_name):
-        print('finding comment link')
+        print(f'finding comment link - ({self.name})')
         comment_css = ('div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu')
         elems = self.driver.find_elements(By.CSS_SELECTOR, comment_css)
 
@@ -575,8 +574,8 @@ class X_Functions:
 
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", elem)
                 time.sleep(1)
-            except:
-                print(f"can't get comment link - ({self.name})")
+            except Exception as err:
+                print(f"can't get comment link - ({self.name}): {err}")
                 break
 
             # check usr_name of comment
@@ -593,11 +592,23 @@ class X_Functions:
                     "return String(elm.getAttribute('aria-label')) + ' - ' + String(elm.getAttribute('href'));"
                     , elem)
                 print(text + f' - ({self.name})')
-            except:
-                print(f'cannot get link of post - ({self.name})')
+            except Exception as err:
+                print(f'cannot get link of post - ({self.name}): {err}')
                 continue
 
             # extract the link from text
             comment_link = 'https://x.com' + text[text.find('/'):-9]
             print(f'getting comment link ok: {comment_link}')
             return comment_link
+
+    def LikeComment(self, comment_link):
+        print(f'direct to comment link to like - ({self.name})')
+        self.driver.get(comment_link)
+        time.sleep(3)
+
+        # use js to like comment
+        try:
+            self.driver.execute_script("document.querySelectorAll('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')[1].lastChild.lastChild.lastChild.lastChild.children[2].lastChild.click();")
+            print(f'like success - ({self.name})')
+        except Exception as err:
+            print(f'error while like comment - ({self.name}): {err}')
