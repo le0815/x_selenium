@@ -439,7 +439,7 @@ class X_Functions:
             elm.click()
             time.sleep(3)
 
-    def GetComment(self, link, number_of_comment):
+    def GetComment(self, link: str, number_of_comment):
 
         self.driver.get(link)
         time.sleep(5)
@@ -504,7 +504,7 @@ class X_Functions:
         return post_arr
 
     # use for personal profile only
-    def CommentWithImage(self, comment_link, text, img_path, _input_tweet):
+    def CommentWithImage(self, comment_link, text, img_name, _input_tweet):
 
         # direct to comment link
         print(f'redirecting to comment link - ({self.name})')
@@ -535,7 +535,7 @@ class X_Functions:
         time.sleep(1)
         # elm = self.driver.find_elements(By.CSS_SELECTOR, "div.css-146c3p1.r-bcqeeo.r-qvutc0.r-37j5jr.r-q4m81j.r-a023e6.r-rjixqe.r-b88u0q.r-1awozwy.r-6koalj.r-18u37iz.r-16y2uox.r-1777fci")[3]
         elm = self.driver.find_element(By.CSS_SELECTOR, "input.r-8akbif.r-orgf3d.r-1udh08x.r-u8s1d.r-xjis5s.r-1wyyakw")
-        elm.send_keys(os.getcwd()+"/imgs/0a584f12c755650b3c44287.jpg")
+        elm.send_keys(os.getcwd()+f"/imgs/{img_name}")
 
         # find input to insert text
         time.sleep(3)
