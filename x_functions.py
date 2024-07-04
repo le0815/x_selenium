@@ -549,7 +549,6 @@ class X_Functions:
         time.sleep(1)
         print(f'commenting - ({self.name})')
         comment_input.send_keys(content[0])
-
         # insert text
         # ActionChains(self.driver).send_keys(text).perform()
 
@@ -558,10 +557,22 @@ class X_Functions:
         comment_input.send_keys(Keys.CONTROL + Keys.ENTER)
 
         # ActionChains(self.driver).key_down(Keys.CONTROL).key_down(Keys.ENTER).key_up(Keys.ENTER).key_down(Keys.CONTROL).perform()
-
+        print('conent for comment:'
+              f'\nText: {content[0]}'
+              f'\nImg: {content[1]}')
+        print(f'commenting finished - ({self.name})')
         time.sleep(3)
 
-        print(f'commenting finished - ({self.name})')
+        # if have 'got it' popups
+        try:
+            time.sleep(2)
+            print(f'finding "got it" popups - ({self.name})')
+            elm = self.driver.find_element(By.CSS_SELECTOR, 'button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l')
+            elm.click()
+            time.sleep(2)
+        except Exception as err:
+            print(f"not seeing 'got it' popups - ({self.name}): {err}")
+
 
     def GetCommentLink(self, usr_name):
         print(f'finding comment link - ({self.name})')
