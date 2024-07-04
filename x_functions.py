@@ -615,7 +615,8 @@ class X_Functions:
             comment_link = 'https://x.com' + text[text.find('/'):-9]
             print(f'getting comment link ok: {comment_link} - ({self.name})')
 
-            return comment_link
+            queue.put(comment_link)
+            # return comment_link
 
     def LikeComment(self, comment_link_by_usr):
         print(f'direct to comment link to like:{comment_link_by_usr} - ({self.name})')
