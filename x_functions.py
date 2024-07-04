@@ -1,7 +1,6 @@
 import os
 import pickle
 import time
-import queue
 import numpy as np
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver import ActionChains, Keys
@@ -574,7 +573,7 @@ class X_Functions:
             print(f"not seeing 'got it' popups - ({self.name}): {err}")
 
 
-    def GetCommentLink(self, usr_name):
+    def GetCommentLink(self, usr_name, queue):
         print(f'finding comment link - ({self.name})')
         comment_css = ('div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu')
         elems = self.driver.find_elements(By.CSS_SELECTOR, comment_css)
@@ -615,6 +614,7 @@ class X_Functions:
             # extract the link from text
             comment_link = 'https://x.com' + text[text.find('/'):-9]
             print(f'getting comment link ok: {comment_link} - ({self.name})')
+
             return comment_link
 
     def LikeComment(self, comment_link_by_usr):
