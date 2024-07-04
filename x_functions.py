@@ -504,7 +504,7 @@ class X_Functions:
         return post_arr
 
     # use for personal profile only
-    def CommentWithImage(self, comment_link, text, img_name, _input_tweet):
+    def CommentWithImage(self, comment_link, content, img_name, _input_tweet):
 
         # direct to comment link
         print(f'redirecting to comment link - ({self.name})')
