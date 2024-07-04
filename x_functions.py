@@ -1,9 +1,9 @@
 import os
 import pickle
 import time
-
-from selenium.webdriver.support.ui import Select
+import queue
 import numpy as np
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
 
@@ -444,7 +444,7 @@ class X_Functions:
             elm.click()
             time.sleep(3)
 
-    def GetComment(self, link: str, number_of_comment):
+    def CrawComment(self, link: str, number_of_comment):
 
         self.driver.get(link)
         time.sleep(5)
