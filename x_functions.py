@@ -67,7 +67,7 @@ class X_Functions:
             print(f'check access for {self.name}')
             time.sleep(3)
 
-    def LoginWithCookie(self, cookie_path):
+    def LoginByCookie(self, cookie_path):
         print(f'Login with cookie - ({self.name})')
         self.driver.get("https://x.com/home")
         time.sleep(3)
