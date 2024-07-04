@@ -61,9 +61,10 @@ class X_Functions:
         time.sleep(5)
 
         # check access
-        while 'https://x.com/account/access?' in self.driver.current_url:
-            print(f'solve the captcha - ({self.name})')
+        time.sleep(5)
+        while self.driver.current_url == 'https://x.com/account/access':
             self.MakeAlert()
+            print(f'check access for {self.name}')
             time.sleep(3)
 
     def LoginWithCookie(self, cookie_path):
@@ -79,9 +80,13 @@ class X_Functions:
         self.driver.get("https://x.com/home")
         time.sleep(3)
 
-        if 'https://x.com/home' not in self.driver.current_url:
-            raise ValueError(
-                f'general exceptions not caught by specific handling - {self.name}, current url: {self.driver.current_url}')
+        # check access
+        time.sleep(5)
+        while self.driver.current_url == 'https://x.com/account/access':
+            self.MakeAlert()
+            print(f'check access for {self.name}')
+            time.sleep(3)
+
 
     def CrawlCommunities(self):
         print(f'directing to communities page - ({self.name})')
@@ -504,10 +509,10 @@ class X_Functions:
         return post_arr
 
     # use for personal profile only
-    def CommentWithImage(self, comment_link, content, img_name, _input_tweet):
+    def CommentWithImage(self, comment_link, content, _input_tweet):
 
         # direct to comment link
-        print(f'redirecting to comment link - ({self.name})')
+        print(f'redirecting to comment link: {comment_link} - ({self.name})')
         self.driver.get(comment_link)
         time.sleep(5)
 
@@ -535,7 +540,7 @@ class X_Functions:
         time.sleep(1)
         # elm = self.driver.find_elements(By.CSS_SELECTOR, "div.css-146c3p1.r-bcqeeo.r-qvutc0.r-37j5jr.r-q4m81j.r-a023e6.r-rjixqe.r-b88u0q.r-1awozwy.r-6koalj.r-18u37iz.r-16y2uox.r-1777fci")[3]
         elm = self.driver.find_element(By.CSS_SELECTOR, "input.r-8akbif.r-orgf3d.r-1udh08x.r-u8s1d.r-xjis5s.r-1wyyakw")
-        elm.send_keys(os.getcwd()+f"/imgs/{img_name}")
+        elm.send_keys(os.getcwd()+f"/imgs/{content[1]}")
 
         # find input to insert text
         time.sleep(3)
@@ -543,7 +548,7 @@ class X_Functions:
         comment_input = self.driver.find_element(By.CSS_SELECTOR, _input_tweet)
         time.sleep(1)
         print(f'commenting - ({self.name})')
-        comment_input.send_keys(text)
+        comment_input.send_keys(content[0])
 
         # insert text
         # ActionChains(self.driver).send_keys(text).perform()
@@ -598,11 +603,11 @@ class X_Functions:
 
             # extract the link from text
             comment_link = 'https://x.com' + text[text.find('/'):-9]
-            print(f'getting comment link ok: {comment_link}')
+            print(f'getting comment link ok: {comment_link} - ({self.name})')
             return comment_link
 
     def LikeComment(self, comment_link_by_usr):
-        print(f'direct to comment link to like - ({self.name})')
+        print(f'direct to comment link to like:{comment_link_by_usr} - ({self.name})')
         self.driver.get(comment_link_by_usr)
         time.sleep(3)
 
