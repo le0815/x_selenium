@@ -601,9 +601,9 @@ class X_Functions:
             print(f'getting comment link ok: {comment_link}')
             return comment_link
 
-    def LikeComment(self, comment_link):
+    def LikeComment(self, comment_link_by_usr):
         print(f'direct to comment link to like - ({self.name})')
-        self.driver.get(comment_link)
+        self.driver.get(comment_link_by_usr)
         time.sleep(3)
 
         # use js to like comment
