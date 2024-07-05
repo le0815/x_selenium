@@ -660,4 +660,19 @@ class X_Functions:
             except Exception as err:
                 print(f'error while like comment - ({self.name}): {err}')
 
+    def CrawlPreviousComments(self, post_link):
+        print(f'start crawl top comment in post - ({self.name})')
 
+        # direct to comment link
+        print(f'redirecting to comment link: {post_link} - ({self.name})')
+        self.driver.get(post_link)
+        time.sleep(5)
+
+        # find top comments
+        elms = self.driver.find_elements(By.CSS_SELECTOR, 'div.css-175oi2r.r-1iusvr4.r-16y2uox.r-1777fci.r-kzbkwu')
+
+        # if cannot find any comments -> return
+        if len(elms) == 0:
+            return None
+
+        return len(elms)
