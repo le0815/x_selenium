@@ -2,6 +2,7 @@ import os
 import pickle
 import time
 import numpy as np
+import pyperclip
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
@@ -85,7 +86,6 @@ class X_Functions:
             self.MakeAlert()
             print(f'check access for {self.name}')
             time.sleep(3)
-
 
     def CrawlCommunities(self):
         print(f'directing to communities page - ({self.name})')
@@ -508,7 +508,7 @@ class X_Functions:
         return post_arr
 
     # use for personal profile only
-    def CommentWithImage(self, comment_link, content, _input_tweet):
+    def CommentWithImage(self, comment_link, content, _input_tweet, lock):
 
         # direct to comment link
         print(f'redirecting to comment link: {comment_link} - ({self.name})')
@@ -539,7 +539,7 @@ class X_Functions:
         time.sleep(1)
         # elm = self.driver.find_elements(By.CSS_SELECTOR, "div.css-146c3p1.r-bcqeeo.r-qvutc0.r-37j5jr.r-q4m81j.r-a023e6.r-rjixqe.r-b88u0q.r-1awozwy.r-6koalj.r-18u37iz.r-16y2uox.r-1777fci")[3]
         elm = self.driver.find_element(By.CSS_SELECTOR, "input.r-8akbif.r-orgf3d.r-1udh08x.r-u8s1d.r-xjis5s.r-1wyyakw")
-        elm.send_keys(os.getcwd()+f"/imgs/{content[1]}")
+        elm.send_keys(os.getcwd() + f"/imgs/{content[1]}")
 
         # find input to insert text
         time.sleep(3)
@@ -547,7 +547,15 @@ class X_Functions:
         comment_input = self.driver.find_element(By.CSS_SELECTOR, _input_tweet)
         time.sleep(1)
         print(f'commenting - ({self.name})')
-        comment_input.send_keys(content[0])
+
+        # use copy and paste to send text
+        # copy text to clipboard
+        # use lock for prevent race condition
+        lock.accquire()
+        pyperclip.copy(content[0])
+        comment_input.send_keys(Keys.CONTROL + 'v')
+        lock.release()
+        # comment_input.send_keys(content[0])
         # insert text
         # ActionChains(self.driver).send_keys(text).perform()
 
@@ -566,12 +574,12 @@ class X_Functions:
         try:
             time.sleep(2)
             print(f'finding "got it" popups - ({self.name})')
-            elm = self.driver.find_element(By.CSS_SELECTOR, 'button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l')
+            elm = self.driver.find_element(By.CSS_SELECTOR,
+                                           'button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l')
             elm.click()
             time.sleep(2)
         except Exception as err:
             print(f"not seeing 'got it' popups - ({self.name}): {err}")
-
 
     def GetCommentLink(self, usr_name, queue):
         print(f'finding comment link - ({self.name})')
@@ -594,7 +602,7 @@ class X_Functions:
                 break
 
             # check usr_name of comment
-            usr_name_current = elem.text[elem.text.find("@")+1:elem.text.find('·')-1]
+            usr_name_current = elem.text[elem.text.find("@") + 1:elem.text.find('·') - 1]
             if usr_name != usr_name_current:
                 print('usr name not equal -> break')
                 break
@@ -618,14 +626,22 @@ class X_Functions:
             queue.put(comment_link)
             # return comment_link
 
-    def LikeComment(self, comment_link_by_usr):
-        print(f'direct to comment link to like:{comment_link_by_usr} - ({self.name})')
-        self.driver.get(comment_link_by_usr)
-        time.sleep(3)
+    def LikeComment(self, comment_link_by_usr='', option=1):
+        # use for difference from acc
+        if option == 0:
+            print(f'direct to comment link to like:{comment_link_by_usr} - ({self.name})')
+            self.driver.get(comment_link_by_usr)
+            time.sleep(3)
+
+        # use for acc just commented
+        else:
+            print('like comment by itself')
+            time.sleep(3)
 
         # use js to like comment
         try:
-            self.driver.execute_script("document.querySelectorAll('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')[1].lastChild.lastChild.lastChild.lastChild.children[2].lastChild.click();")
+            self.driver.execute_script(
+                "document.querySelectorAll('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')[1].lastChild.lastChild.lastChild.lastChild.children[2].lastChild.click();")
             print(f'like success - ({self.name})')
         except Exception as err:
             print(f'error while like comment - ({self.name}): {err}')
