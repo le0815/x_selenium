@@ -20,6 +20,14 @@ class X_Functions:
         freq = 440  # Hz
         os.system('play -nq -t alsa synth {} sine {}'.format(duration, freq))
 
+    def CheckAccess(self):
+        # check access
+        time.sleep(5)
+        while self.driver.current_url == 'https://x.com/account/access' or self.driver.current_url == 'https://x.com/account/access?lang=en':
+            self.MakeAlert()
+            print(f'check access for {self.name}')
+            time.sleep(3)
+
     def Login(self, email):
         self.driver.get("https://x.com/home")
         time.sleep(3)
@@ -60,12 +68,7 @@ class X_Functions:
         self.driver.switch_to.window(self.driver.window_handles[0])
         time.sleep(5)
 
-        # check access
-        time.sleep(5)
-        while self.driver.current_url == 'https://x.com/account/access':
-            self.MakeAlert()
-            print(f'check access for {self.name}')
-            time.sleep(3)
+        self.CheckAccess()
 
     def LoginByCookie(self, cookie_path):
         print(f'Login with cookie - ({self.name})')
@@ -82,10 +85,12 @@ class X_Functions:
 
         # check access
         time.sleep(5)
-        while self.driver.current_url == 'https://x.com/account/access':
+        while self.driver.current_url == 'https://x.com/account/access' or self.driver.current_url == 'https://x.com/account/access?lang=en':
             self.MakeAlert()
             print(f'check access for {self.name}')
             time.sleep(3)
+
+        self.CheckAccess()
 
     def CrawlCommunities(self):
         print(f'directing to communities page - ({self.name})')
