@@ -448,9 +448,9 @@ class X_Functions:
             elm.click()
             time.sleep(3)
 
-    def CrawPost(self, link: str, number_of_comment):
+    def CrawPost(self, profile_link: str, number_of_post):
 
-        self.driver.get(link)
+        self.driver.get(profile_link)
         time.sleep(5)
 
         print(f"start crawling comment - ({self.name})")
@@ -459,7 +459,7 @@ class X_Functions:
         post_arr = []
 
         # loop util get post = number
-        while len(post_arr) < number_of_comment:
+        while len(post_arr) < number_of_post:
             # get list community
             print(f'getting list post - ({self.name})')
             comment_css = ('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')
@@ -502,7 +502,7 @@ class X_Functions:
                     print(f"the link has already existed - ({self.name})")
                     continue
 
-                if len(post_arr) > number_of_comment:
+                if len(post_arr) > number_of_post:
                     break
 
                 print(f"adding link to arr - ({self.name})")
@@ -513,20 +513,28 @@ class X_Functions:
         return post_arr
 
     # use for personal profile only
-    def CommentWithImage(self, comment_link, content, _input_tweet, lock):
+    def CommentWithImage(self, post_link, content, _input_tweet, lock, previous_comment_elm, previous_comment=True):
 
         # direct to comment link
-        print(f'redirecting to comment link: {comment_link} - ({self.name})')
-        self.driver.get(comment_link)
+        print(f'redirecting to post link: {post_link} - ({self.name})')
+        self.driver.get(post_link)
         time.sleep(5)
 
-        # click on comment icon
-        print(f'click on comment icon - ({self.name})')
-        elems = self.driver.find_elements(By.CSS_SELECTOR,
-                                          "button.css-175oi2r.r-1777fci.r-bt1l66.r-bztko3.r-lrvibr.r-1loqt21.r-1ny4l3l")
-        elems[1].click()
+        # if have no previous comment
+        if previous_comment:
+            # click the comment icon by js
+            self.driver.execute_script(
+                "arguments[0].lastChild.lastChild.lastChild.children[0].lastChild.click();"
+                , previous_comment_elm)
+            time.sleep(2)
+        else:
+            # click on comment icon
+            print(f'click on comment icon - ({self.name})')
+            elems = self.driver.find_elements(By.CSS_SELECTOR,
+                                              "button.css-175oi2r.r-1777fci.r-bt1l66.r-bztko3.r-lrvibr.r-1loqt21.r-1ny4l3l")
+            elems[1].click()
 
-        time.sleep(2)
+            time.sleep(2)
 
         # if have popups
         try:
@@ -585,6 +593,14 @@ class X_Functions:
             time.sleep(2)
         except Exception as err:
             print(f"not seeing 'got it' popups - ({self.name}): {err}")
+
+        # click to previous comment to show self comment
+        if previous_comment:
+            # click the comment icon by js
+            self.driver.execute_script(
+                "arguments[0].lastChild.lastChild.lastChild.children[0].click();"
+                , previous_comment_elm)
+            time.sleep(2)
 
     def GetCommentLink(self, usr_name, queue):
         print(f'finding comment link - ({self.name})')
@@ -675,4 +691,4 @@ class X_Functions:
         if len(elms) == 0:
             return None
 
-        return len(elms)
+        return elms
