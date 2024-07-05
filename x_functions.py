@@ -448,7 +448,7 @@ class X_Functions:
             elm.click()
             time.sleep(3)
 
-    def CrawComment(self, link: str, number_of_comment):
+    def CrawPost(self, link: str, number_of_comment):
 
         self.driver.get(link)
         time.sleep(5)
