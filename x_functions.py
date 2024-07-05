@@ -551,7 +551,7 @@ class X_Functions:
         # use copy and paste to send text
         # copy text to clipboard
         # use lock for prevent race condition
-        lock.accquire()
+        lock.acquire()
         pyperclip.copy(content[0])
         comment_input.send_keys(Keys.CONTROL + 'v')
         lock.release()
@@ -589,7 +589,7 @@ class X_Functions:
         for elem in elems:
 
             # scroll to current comment
-            print(f'scrolling to current comment- ({self.name})')
+            print(f'scrolling to current comment - ({self.name})')
             try:
                 if elem is elems[len(elems) - 1]:
                     print(f'sroll to end page - ({self.name})')
@@ -624,7 +624,8 @@ class X_Functions:
             print(f'getting comment link ok: {comment_link} - ({self.name})')
 
             queue.put(comment_link)
-            # return comment_link
+
+            return comment_link
 
     def LikeComment(self, comment_link_by_usr='', option=1):
         # use for difference from acc
@@ -633,15 +634,25 @@ class X_Functions:
             self.driver.get(comment_link_by_usr)
             time.sleep(3)
 
+            # use js to like comment
+            try:
+                self.driver.execute_script(
+                    "document.querySelectorAll('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')[1].lastChild.lastChild.lastChild.lastChild.children[2].lastChild.click();")
+                print(f'like success - ({self.name})')
+            except Exception as err:
+                print(f'error while like comment - ({self.name}): {err}')
+
         # use for acc just commented
         else:
             print('like comment by itself')
             time.sleep(3)
 
-        # use js to like comment
-        try:
-            self.driver.execute_script(
-                "document.querySelectorAll('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')[1].lastChild.lastChild.lastChild.lastChild.children[2].lastChild.click();")
-            print(f'like success - ({self.name})')
-        except Exception as err:
-            print(f'error while like comment - ({self.name}): {err}')
+            # use js to like comment
+            try:
+                self.driver.execute_script(
+                    "document.querySelectorAll('div.css-175oi2r.r-16y2uox.r-1wbh5a2.r-1ny4l3l')[1].lastChild.lastChild.lastChild.lastChild.lastChild.children[2].lastChild.click();")
+                print(f'like success - ({self.name})')
+            except Exception as err:
+                print(f'error while like comment - ({self.name}): {err}')
+
+
