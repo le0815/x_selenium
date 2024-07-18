@@ -1,5 +1,6 @@
 import os
 import pickle
+import random
 import time
 import numpy as np
 import pyperclip
@@ -19,6 +20,10 @@ class X_Functions:
         duration = 1  # seconds
         freq = 440  # Hz
         os.system('play -nq -t alsa synth {} sine {}'.format(duration, freq))
+
+    def SetCookie(self, email, usr_name):
+        pickle.dump(self.driver.get_cookies(), open(f"cookies/{email[:email.find('.')]}_{usr_name}.pkl", "wb"))
+        print('set cookies success')
 
     def CheckAccess(self):
         # check access
@@ -406,34 +411,34 @@ class X_Functions:
         usr_name = self.driver.execute_script(
             f"elm = document.querySelector('input'); return elm.getAttribute('value')")
         print(f'usr_name - ({self.name}): {usr_name}')
-        yield usr_name
+        return usr_name
 
-        # redirect to community
-        time.sleep(3)
-        print(f'redirect to community - ({self.name})')
-        self.driver.get("https://x.com/i/communities/1506800881525829633")
-        time.sleep(2)
+        # # redirect to community
+        # time.sleep(3)
+        # print(f'redirect to community - ({self.name})')
+        # self.driver.get("https://x.com/i/communities/1506800881525829633")
+        # time.sleep(2)
+        #
+        # # check 'try it out' popups
+        # try:
+        #     print(f'finding /try it out/ popups - ({self.name})')
+        #     elem = self.driver.find_elements(By.CSS_SELECTOR,
+        #                                      "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
+        #
+        #     if 'Try it out' in elem[1].text:
+        #         print(f'have Try it out popups - ({self.name})')
+        #         print(f'clicking /try it out/ popups - ({self.name})')
+        #         elem[1].click()
+        #
+        #         if 'Check it out' in elem[0].text:
+        #             print(f'have popups - ({self.name})')
+        #             print(f'clicking /Check it out/ popups - ({self.name})')
+        #             elem[0].click()
+        #
+        # except:
+        #     print(f'no /try it out/ popups - ({self.name})')
 
-        # check 'try it out' popups
-        try:
-            print(f'finding /try it out/ popups - ({self.name})')
-            elem = self.driver.find_elements(By.CSS_SELECTOR,
-                                             "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
-
-            if 'Try it out' in elem[1].text:
-                print(f'have Try it out popups - ({self.name})')
-                print(f'clicking /try it out/ popups - ({self.name})')
-                elem[1].click()
-
-                if 'Check it out' in elem[0].text:
-                    print(f'have popups - ({self.name})')
-                    print(f'clicking /Check it out/ popups - ({self.name})')
-                    elem[0].click()
-
-        except:
-            print(f'no /try it out/ popups - ({self.name})')
-
-        print(f'ok - ({self.name})')
+        # print(f'ok - ({self.name})')
 
     def FollowPage(self):
         time.sleep(5)
@@ -513,7 +518,7 @@ class X_Functions:
         return post_arr
 
     # use for personal profile only
-    def CommentWithImage(self, post_link, content, _input_tweet, lock, previous_comment_elm, previous_comment=True):
+    def CommentWithImage(self, post_link, content, _input_tweet, lock, previous_comment_elm='', previous_comment=True):
 
         # direct to comment link
         print(f'redirecting to post link: {post_link} - ({self.name})')
@@ -692,3 +697,21 @@ class X_Functions:
             return None
 
         return elms
+
+    def ScrollPost(self):
+
+        print('start scroll post')
+        time.sleep(5)
+
+        while 1:
+            print('press PgDn btn to scroll')
+            ActionChains(self.driver).send_keys(Keys.PAGE_DOWN).perform()
+
+            time.sleep(1)
+            if random.randint(0, 10) == 8:
+                print('random like post')
+                self.LikeComment()
+
+            time.sleep(2)
+
+
