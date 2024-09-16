@@ -1,0 +1,423 @@
+/home/ha/PycharmProjects/x_selenium/.venv/bin/python /home/ha/PycharmProjects/x_selenium/main.py
+switching to login form - (main)
+entering email - (main)
+entering pwd - (main)
+clicking accept btn - (main)
+no accept btn - (main): Message: no such element: Unable to locate element: {"method":"css selector","selector":"div#confirm_yes"}
+  (Session info: chrome=124.0.6367.201); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+#0 0x5d7b927bcdc3 <unknown>
+#1 0x5d7b924ab4e7 <unknown>
+#2 0x5d7b924f635d <unknown>
+#3 0x5d7b924f6411 <unknown>
+#4 0x5d7b92539774 <unknown>
+#5 0x5d7b9251847d <unknown>
+#6 0x5d7b92536c29 <unknown>
+#7 0x5d7b925181f3 <unknown>
+#8 0x5d7b924e928a <unknown>
+#9 0x5d7b924e9c5e <unknown>
+#10 0x5d7b927810eb <unknown>
+#11 0x5d7b9278503b <unknown>
+#12 0x5d7b9276d201 <unknown>
+#13 0x5d7b92785ba2 <unknown>
+#14 0x5d7b927520bf <unknown>
+#15 0x5d7b927abf18 <unknown>
+#16 0x5d7b927ac0f0 <unknown>
+#17 0x5d7b927bbf14 <unknown>
+#18 0x70498c097b5a <unknown>
+
+switching to main window - (main)
+getting comment
+start crawling comment - (main)
+getting list post - (main)
+scrolling to current post - (main)
+post has pinned -> continue
+scrolling to current post - (main)
+try getting link of post - (main)
+110 views. View post analytics - /UyenNhi3x/status/1808904405791748431/analytics - (main)
+adding link to arr - (main)
+post arr size: 1 - (main)
+scrolling to current post - (main)
+try getting link of post - (main)
+96 views. View post analytics - /UyenNhi3x/status/1808904460137288184/analytics - (main)
+adding link to arr - (main)
+post arr size: 2 - (main)
+scrolling to current post - (main)
+try getting link of post - (main)
+10495 views. View post analytics - /bishoparq139/status/1808856073966923816/analytics - (main)
+adding link to arr - (main)
+post arr size: 3 - (main)
+crawling finished - (main)
+start multi login
+Login with cookie - (JanessaW65514)
+Login with cookie - (WTabour90392)
+Login with cookie - (LauraleeMa32629)
+setting cookie - (LauraleeMa32629)
+setting cookie - (WTabour90392)
+setting cookie success -> redirect to the login page - (LauraleeMa32629)
+setting cookie success -> redirect to the login page - (WTabour90392)
+setting cookie - (JanessaW65514)
+setting cookie success -> redirect to the login page - (JanessaW65514)
+start multi comment
+redirecting to comment link: https://x.com/UyenNhi3x/status/1808904405791748431/ - (JanessaW65514)
+redirecting to comment link: https://x.com/UyenNhi3x/status/1808904460137288184/ - (WTabour90392)
+redirecting to comment link: https://x.com/bishoparq139/status/1808856073966923816/ - (LauraleeMa32629)
+click on comment icon - (LauraleeMa32629)
+click on comment icon - (WTabour90392)
+click on comment icon - (JanessaW65514)
+Exception in thread Thread-5 (CommentWithImage):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ha/PycharmProjects/x_selenium/x_functions.py", line 521, in CommentWithImage
+    elems[1].click()
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 94, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 395, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element <button aria-label="5 Replies. Reply" role="button" class="css-175oi2r r-1777fci r-bt1l66 r-bztko3 r-lrvibr r-1loqt21 r-1ny4l3l" data-testid="reply" type="button">...</button> is not clickable at point (272, 31). Other element would receive the click: <span class="css-1jxf684 r-bcqeeo r-1ttztb7 r-qvutc0 r-poiln3" style="text-overflow: unset;">...</span>
+  (Session info: chrome=124.0.6367.201)
+Stacktrace:
+#0 0x589a9b580dc3 <unknown>
+#1 0x589a9b26f4e7 <unknown>
+#2 0x589a9b2c0fb3 <unknown>
+#3 0x589a9b2beeb6 <unknown>
+#4 0x589a9b2bc887 <unknown>
+#5 0x589a9b2bbc54 <unknown>
+#6 0x589a9b2af209 <unknown>
+#7 0x589a9b2dc452 <unknown>
+#8 0x589a9b2aeb98 <unknown>
+#9 0x589a9b2dc61e <unknown>
+#10 0x589a9b2fac29 <unknown>
+#11 0x589a9b2dc1f3 <unknown>
+#12 0x589a9b2ad28a <unknown>
+#13 0x589a9b2adc5e <unknown>
+#14 0x589a9b5450eb <unknown>
+#15 0x589a9b54903b <unknown>
+#16 0x589a9b531201 <unknown>
+#17 0x589a9b549ba2 <unknown>
+#18 0x589a9b5160bf <unknown>
+#19 0x589a9b56ff18 <unknown>
+#20 0x589a9b5700f0 <unknown>
+#21 0x589a9b57ff14 <unknown>
+#22 0x736127897b5a <unknown>
+
+finding popups - (LauraleeMa32629)
+have popups - (LauraleeMa32629)
+clicking popups - (LauraleeMa32629)
+sending image
+finding popups - (JanessaW65514)
+have popups - (JanessaW65514)
+clicking popups - (JanessaW65514)
+sending image
+finding input - (LauraleeMa32629)
+finding input - (JanessaW65514)
+commenting - (LauraleeMa32629)
+Exception in thread Thread-6 (CommentWithImage):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ha/PycharmProjects/x_selenium/x_functions.py", line 549, in CommentWithImage
+    comment_input.send_keys(content[0])
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 231, in send_keys
+    self._execute(
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 395, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: ChromeDriver only supports characters in the BMP
+  (Session info: chrome=124.0.6367.201)
+Stacktrace:
+#0 0x5c6b7c5a8dc3 <unknown>
+#1 0x5c6b7c2974e7 <unknown>
+#2 0x5c6b7c31c201 <unknown>
+#3 0x5c6b7c2dc3e4 <unknown>
+#4 0x5c6b7c2db968 <unknown>
+#5 0x5c6b7c304452 <unknown>
+#6 0x5c6b7c2d6b98 <unknown>
+#7 0x5c6b7c30461e <unknown>
+#8 0x5c6b7c322c29 <unknown>
+#9 0x5c6b7c3041f3 <unknown>
+#10 0x5c6b7c2d528a <unknown>
+#11 0x5c6b7c2d5c5e <unknown>
+#12 0x5c6b7c56d0eb <unknown>
+#13 0x5c6b7c57103b <unknown>
+#14 0x5c6b7c559201 <unknown>
+#15 0x5c6b7c571ba2 <unknown>
+#16 0x5c6b7c53e0bf <unknown>
+#17 0x5c6b7c597f18 <unknown>
+#18 0x5c6b7c5980f0 <unknown>
+#19 0x5c6b7c5a7f14 <unknown>
+#20 0x739a8fa97b5a <unknown>
+
+commenting - (JanessaW65514)
+sending key stroke to submit - (JanessaW65514)
+conent for comment:
+Text: ✅Link nhóm Cô gái đảm đang : http://tuoihoctro.icu/bachtuyetdam ✅Link nhóm tối cổ :t.me/hettoico
+
+Img: 8219f5527d15df4b8604248.jpg
+commenting finished - (JanessaW65514)
+finding "got it" popups - (JanessaW65514)
+not seeing 'got it' popups - (JanessaW65514): Message: no such element: Unable to locate element: {"method":"css selector","selector":"button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l"}
+  (Session info: chrome=124.0.6367.201); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+#0 0x5f0d734d8dc3 <unknown>
+#1 0x5f0d731c74e7 <unknown>
+#2 0x5f0d7321235d <unknown>
+#3 0x5f0d73212411 <unknown>
+#4 0x5f0d73255774 <unknown>
+#5 0x5f0d7323447d <unknown>
+#6 0x5f0d73252c29 <unknown>
+#7 0x5f0d732341f3 <unknown>
+#8 0x5f0d7320528a <unknown>
+#9 0x5f0d73205c5e <unknown>
+#10 0x5f0d7349d0eb <unknown>
+#11 0x5f0d734a103b <unknown>
+#12 0x5f0d73489201 <unknown>
+#13 0x5f0d734a1ba2 <unknown>
+#14 0x5f0d7346e0bf <unknown>
+#15 0x5f0d734c7f18 <unknown>
+#16 0x5f0d734c80f0 <unknown>
+#17 0x5f0d734d7f14 <unknown>
+#18 0x783fb6697b5a <unknown>
+
+start multi get link commented
+finding comment link - (JanessaW65514)
+finding comment link - (WTabour90392)finding comment link - (LauraleeMa32629)
+
+scrolling to current comment- (JanessaW65514)
+scrolling to current comment- (LauraleeMa32629)
+scrolling to current comment- (WTabour90392)
+sroll to end page - (WTabour90392)
+usr name not equal -> break
+try getting link of comment- (JanessaW65514)
+View post analytics - /JanessaW65514/status/1808905435266887931/analytics - (JanessaW65514)
+getting comment link ok: https://x.com/JanessaW65514/status/1808905435266887931/ - (JanessaW65514)
+scrolling to current comment- (JanessaW65514)
+usr name not equal -> break
+usr name not equal -> break
+link commented: ['https://x.com/JanessaW65514/status/1808905435266887931/']
+writing logs
+write logs ok
+getting comment
+start crawling comment - (main)
+getting list post - (main)
+scrolling to current post - (main)
+try getting link of post - (main)
+2872 views. View post analytics - /sugarbabytop00/status/1808550518949888392/analytics - (main)
+adding link to arr - (main)
+post arr size: 1 - (main)
+scrolling to current post - (main)
+try getting link of post - (main)
+170891 views. View post analytics - /onlyfansvippro/status/1790053376530526359/analytics - (main)
+adding link to arr - (main)
+post arr size: 2 - (main)
+scrolling to current post - (main)
+try getting link of post - (main)
+30195 views. View post analytics - /onlyfansvippro/status/1808174966095204725/analytics - (main)
+adding link to arr - (main)
+post arr size: 3 - (main)
+scrolling to current post - (main)
+try getting link of post - (main)
+33161 views. View post analytics - /onlyfansvippro/status/1807801928929394728/analytics - (main)
+adding link to arr - (main)
+post arr size: 4 - (main)
+crawling finished - (main)
+start multi login
+Login with cookie - (WTabour90392)
+Login with cookie - (FHallihan89873)
+Login with cookie - (MartieShel85542)
+setting cookie - (MartieShel85542)
+setting cookie success -> redirect to the login page - (MartieShel85542)
+setting cookie - (WTabour90392)
+setting cookie success -> redirect to the login page - (WTabour90392)
+check access for MartieShel85542
+setting cookie - (FHallihan89873)
+setting cookie success -> redirect to the login page - (FHallihan89873)
+check access for MartieShel85542
+check access for FHallihan89873
+check access for FHallihan89873
+start multi comment
+redirecting to comment link: https://x.com/sugarbabytop00/status/1808550518949888392/ - (WTabour90392)
+redirecting to comment link: https://x.com/onlyfansvippro/status/1790053376530526359/ - (FHallihan89873)redirecting to comment link: https://x.com/onlyfansvippro/status/1808174966095204725/ - (MartieShel85542)
+
+click on comment icon - (MartieShel85542)
+click on comment icon - (WTabour90392)
+finding popups - (WTabour90392)
+have popups - (WTabour90392)
+clicking popups - (WTabour90392)
+sending image
+finding popups - (MartieShel85542)
+have popups - (MartieShel85542)
+clicking popups - (MartieShel85542)
+sending image
+Exception in thread Thread-13 (CommentWithImage):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ha/PycharmProjects/x_selenium/x_functions.py", line 540, in CommentWithImage
+    elm = self.driver.find_element(By.CSS_SELECTOR, "input.r-8akbif.r-orgf3d.r-1udh08x.r-u8s1d.r-xjis5s.r-1wyyakw")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webdriver.py", line 741, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"css selector","selector":"input.r-8akbif.r-orgf3d.r-1udh08x.r-u8s1d.r-xjis5s.r-1wyyakw"}
+  (Session info: chrome=124.0.6367.201); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Stacktrace:
+#0 0x58527029ddc3 <unknown>
+#1 0x58526ff8c4e7 <unknown>
+#2 0x58526ffd735d <unknown>
+#3 0x58526ffd7411 <unknown>
+#4 0x58527001a774 <unknown>
+#5 0x58526fff947d <unknown>
+#6 0x585270017c29 <unknown>
+#7 0x58526fff91f3 <unknown>
+#8 0x58526ffca28a <unknown>
+#9 0x58526ffcac5e <unknown>
+#10 0x5852702620eb <unknown>
+#11 0x58527026603b <unknown>
+#12 0x58527024e201 <unknown>
+#13 0x585270266ba2 <unknown>
+#14 0x5852702330bf <unknown>
+#15 0x58527028cf18 <unknown>
+#16 0x58527028d0f0 <unknown>
+#17 0x58527029cf14 <unknown>
+#18 0x707b1d297b5a <unknown>
+
+click on comment icon - (FHallihan89873)
+finding input - (MartieShel85542)
+finding popups - (FHallihan89873)
+have popups - (FHallihan89873)
+clicking popups - (FHallihan89873)
+sending image
+commenting - (MartieShel85542)
+Exception in thread Thread-15 (CommentWithImage):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ha/PycharmProjects/x_selenium/x_functions.py", line 549, in CommentWithImage
+    comment_input.send_keys(content[0])
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 231, in send_keys
+    self._execute(
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 395, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: ChromeDriver only supports characters in the BMP
+  (Session info: chrome=124.0.6367.201)
+Stacktrace:
+#0 0x5b75be27edc3 <unknown>
+#1 0x5b75bdf6d4e7 <unknown>
+#2 0x5b75bdff2201 <unknown>
+#3 0x5b75bdfb23e4 <unknown>
+#4 0x5b75bdfb1968 <unknown>
+#5 0x5b75bdfda452 <unknown>
+#6 0x5b75bdfacb98 <unknown>
+#7 0x5b75bdfda61e <unknown>
+#8 0x5b75bdff8c29 <unknown>
+#9 0x5b75bdfda1f3 <unknown>
+#10 0x5b75bdfab28a <unknown>
+#11 0x5b75bdfabc5e <unknown>
+#12 0x5b75be2430eb <unknown>
+#13 0x5b75be24703b <unknown>
+#14 0x5b75be22f201 <unknown>
+#15 0x5b75be247ba2 <unknown>
+#16 0x5b75be2140bf <unknown>
+#17 0x5b75be26df18 <unknown>
+#18 0x5b75be26e0f0 <unknown>
+#19 0x5b75be27df14 <unknown>
+#20 0x7b4264a97b5a <unknown>
+
+finding input - (FHallihan89873)
+commenting - (FHallihan89873)
+Exception in thread Thread-14 (CommentWithImage):
+Traceback (most recent call last):
+  File "/usr/lib/python3.11/threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.11/threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/ha/PycharmProjects/x_selenium/x_functions.py", line 549, in CommentWithImage
+    comment_input.send_keys(content[0])
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 231, in send_keys
+    self._execute(
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webelement.py", line 395, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/webdriver.py", line 347, in execute
+    self.error_handler.check_response(response)
+  File "/home/ha/PycharmProjects/x_selenium/.venv/lib/python3.11/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: unknown error: ChromeDriver only supports characters in the BMP
+  (Session info: chrome=124.0.6367.201)
+Stacktrace:
+#0 0x5abd11ef6dc3 <unknown>
+#1 0x5abd11be54e7 <unknown>
+#2 0x5abd11c6a201 <unknown>
+#3 0x5abd11c2a3e4 <unknown>
+#4 0x5abd11c29968 <unknown>
+#5 0x5abd11c52452 <unknown>
+#6 0x5abd11c24b98 <unknown>
+#7 0x5abd11c5261e <unknown>
+#8 0x5abd11c70c29 <unknown>
+#9 0x5abd11c521f3 <unknown>
+#10 0x5abd11c2328a <unknown>
+#11 0x5abd11c23c5e <unknown>
+#12 0x5abd11ebb0eb <unknown>
+#13 0x5abd11ebf03b <unknown>
+#14 0x5abd11ea7201 <unknown>
+#15 0x5abd11ebfba2 <unknown>
+#16 0x5abd11e8c0bf <unknown>
+#17 0x5abd11ee5f18 <unknown>
+#18 0x5abd11ee60f0 <unknown>
+#19 0x5abd11ef5f14 <unknown>
+#20 0x7f5a8fe97b5a <unknown>
+
+start multi get link commented
+finding comment link - (WTabour90392)
+finding comment link - (FHallihan89873)
+finding comment link - (MartieShel85542)
+scrolling to current comment- (WTabour90392)
+scrolling to current comment- (FHallihan89873)
+scrolling to current comment- (MartieShel85542)
+usr name not equal -> break
+usr name not equal -> break
+usr name not equal -> break
+link commented: []
+writing logs
+write logs ok
+getting comment
+start crawling comment - (main)
+getting list post - (main)
+scrolling to current post - (main)
+Traceback (most recent call last):
+  File "/home/ha/PycharmProjects/x_selenium/main.py", line 97, in <module>
+    comment_links = main_acc.CrawComment(number_of_comment=number_acc_use, link=porn_link)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ha/PycharmProjects/x_selenium/x_functions.py", line 469, in CrawComment
+    time.sleep(1)
+KeyboardInterrupt
+
+Process finished with exit code 130 (interrupted by signal 2:SIGINT)

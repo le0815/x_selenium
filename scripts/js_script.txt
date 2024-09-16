@@ -1,0 +1,33 @@
+// get xpath value
+// Function to get XPath of clicked element
+function getXPathOnClick(event) {
+    // Get clicked element
+    const clickedElement = document.elementFromPoint(event.clientX, event.clientY);
+
+    // Get XPath of clicked element
+    const xpath = getXPath(clickedElement);
+
+    // Print XPath
+    console.log("XPath: ", xpath);
+}
+
+// Function to generate XPath for an element
+function getXPath(element) {
+    const xpath = [];
+    for (; element && element.nodeType == 1; element = element.parentNode) {
+        let sibling = element.previousSibling;
+        let count = 1;
+        for (; sibling; sibling = sibling.previousSibling) {
+            if (sibling.nodeType == 1 && sibling.tagName == element.tagName) {
+                count++;
+            }
+        }
+        const tagName = element.tagName.toLowerCase();
+        const index = (count == 1 ? '' : '[' + count + ']');
+        xpath.unshift(tagName + index);
+    }
+    return xpath.join('/');
+}
+
+// Event listener to get XPath on click
+document.addEventListener("click", getXPathOnClick);

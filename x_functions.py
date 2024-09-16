@@ -1,3 +1,4 @@
+import datetime
 import os
 import pickle
 import random
@@ -21,9 +22,9 @@ class X_Functions:
         freq = 440  # Hz
         os.system('play -nq -t alsa synth {} sine {}'.format(duration, freq))
 
-    def SetCookie(self, email, usr_name):
-        pickle.dump(self.driver.get_cookies(), open(f"cookies/{email[:email.find('.')]}_{usr_name}.pkl", "wb"))
-        print('set cookies success')
+    def GetCookie(self, email, usr_name, cookie_path):
+        pickle.dump(self.driver.get_cookies(), open(f"{cookie_path}{email[:email.find('.')]}_{usr_name}.pkl", "wb"))
+        print('Get cookies success')
 
     def CheckAccess(self):
         # check access
@@ -344,7 +345,7 @@ class X_Functions:
         print(f"crawling finished - ({self.name})")
         return post_arr
 
-    def RegAcc(self, email):
+    def RegAcc(self, email, cookie_path):
         self.driver.get("https://twitter.com/")
         time.sleep(3)
 
@@ -384,7 +385,7 @@ class X_Functions:
         # switch back to main window
         print(f"switching to main window - ({self.name})")
         self.driver.switch_to.window(self.driver.window_handles[0])
-        time.sleep(5)
+        time.sleep(7)
 
         # select month
         print(f'select month - ({self.name})')
@@ -411,7 +412,11 @@ class X_Functions:
         usr_name = self.driver.execute_script(
             f"elm = document.querySelector('input'); return elm.getAttribute('value')")
         print(f'usr_name - ({self.name}): {usr_name}')
-        return usr_name
+
+        print(f'getting cookies - ({self.name})')
+        self.GetCookie(email=email, usr_name=usr_name, cookie_path=cookie_path)
+
+        # return usr_name
 
         # # redirect to community
         # time.sleep(3)
@@ -698,20 +703,38 @@ class X_Functions:
 
         return elms
 
-    def ScrollPost(self):
+    def SurfX(self, time_out):
 
-        print('start scroll post')
+        print(f'timeout to surf: {time_out} - ({self.name})')
+        self.driver.get('https://x.com/home')
+
+        print(f'start scroll post - ({self.name})')
         time.sleep(5)
 
-        while 1:
-            print('press PgDn btn to scroll')
+        self.CheckLikePopups()
+
+        time_out += round(time.time())
+        while round(time.time()) <= time_out:
+            print(f'press PgDn btn to scroll - ({self.name})')
             ActionChains(self.driver).send_keys(Keys.PAGE_DOWN).perform()
 
             time.sleep(1)
             if random.randint(0, 10) == 8:
-                print('random like post')
+                print(f'random like post - ({self.name})')
                 self.LikeComment()
 
             time.sleep(2)
 
+        self.MakeAlert()
 
+    def CheckLikePopups(self):
+        # check 'try it out' popups
+        try:
+            print(f'finding /like/ popups - ({self.name})')
+            elem = self.driver.find_element(By.CSS_SELECTOR,
+                                            "button.css-175oi2r.r-sdzlij.r-1phboty.r-rs99b7.r-lrvibr.r-1mnahxq.r-19yznuf.r-64el8z.r-1fkl15p.r-1loqt21.r-o7ynqc.r-6416eg.r-1ny4l3l")
+
+            elem.click()
+
+        except:
+            print(f'no /like/ popups - ({self.name})')
